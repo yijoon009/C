@@ -1,0 +1,16 @@
+#include<stdio.h>
+#include<string.h>
+int main() {
+
+	char str[81];
+	gets(str);
+	int al[26] = { 0, };
+	for (int i = 0; i < strlen(str); i++) {
+		al[str[i] - 97]++;
+	}
+	for (int i = 0; i < 26; i++) {
+		printf("%c : %d\n", i + 97, al[i]);
+	}
+
+	return 0;
+}

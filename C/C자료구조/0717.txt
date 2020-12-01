@@ -1,0 +1,269 @@
+모듈화 프로그래밍
+ctrl k f
+
+첨부파일 참고
+
+소스파일에서 studentFile.h 만들어
+
+#pragma once
+#include <stdio.h>
+typedef struct student {
+	int num;	//1001번부터 순차적으로 지급
+	char name[20];
+	int s1;
+	int s2;
+	double avg;
+}S;
+void inputScores(S *sp) {	//주소값을 인자로 받기위한 포인터 필요 => 값 변화 발생
+	printf("중간고사 점수입력: ");
+	scanf("%d", &sp->s1);
+	printf("기말고사 점수입력: ");
+	scanf("%d", &sp->s2);
+	sp->avg = (sp->s1 + sp->s2) / 2.0;
+}
+void inputS(S* sp, int index) {	//주소값을 인자로 받기위한 포인터 필요 => 값 변화 발생
+	sp->num = 1001 + index;
+	printf("%d번의 학생이름 입력: ", sp->num);
+	scanf("%s", sp->name);
+	inputScores(sp);
+}
+void show(S sp) {	//값 변화 필요없음
+	printf("%d. %s의 성적은 %.2lf입니다.\n", sp.num, sp.name, sp.avg);
+}
+
+
++++++
+
+
+소스.cpp
+
+#include "studentFile.h"	//내가 정의한건 ""안에
+#include <stdlib.h>
+int main() {
+
+	printf("학생수 입력: ");
+	int n;
+	scanf("%d", &n);
+	S *s = (S *)malloc(n * sizeof(S));
+	//학생 구조체 배열이 생성됨
+	for (int i = 0;i < n;i++) {
+		inputS(&s[i], i);
+	}
+	for (int i = 0;i < n;i++) {
+		show(s[i]);
+	}
+
+	return 0;
+}
+
+
+=====+++++
+
+
+1. 사용자가 정수 1개 입력(단어의 개수)
+2. 입력한 단어수만큼 단어 입력 -> 기본점수 100점 부여
+3. 못맞출때마다 점수가 -10 처리됨.
+4. 단어를 맞춤 OR 0점되면 종료
+5. 단어맞추기 반복(단어 개수만큼)
+6. 최종점수 출력 -> 절반이상 점수획득시 ★ 출력
+
+typedef struct WORD{
+	char word[10];	//apple
+	char blind[10];	//_____ (언더바 5개)
+	int score;
+}W;
+
+
+-----
+
+(게임종료후 내가한거)
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+typedef struct WORD{
+	char word[10];	//apple
+	char blind[10];	//_____ (언더바 5개)
+	int score;
+}W;
+int main() {
+
+	printf("단어개수 입력: ");
+	int n;
+	scanf("%d", &n);
+	W *w = (W *)malloc(n * sizeof(W));
+	for (int i = 0;i < n;i++) {
+		printf("단어입력: ");
+		scanf("%s", w[i].word);	//apple 이면 _____
+		int j;
+		for (j = 0;j < strlen(w[i].word);j++) {
+			w[i].blind[j] = '_';	//첫번째 구조체 안에있는 두번째 멤버(언더바) 추가
+		}
+		w[i].blind[j] = '\0';
+		//a p p l e		문자배열 {'a','b', 'c'}
+		//a p p l e \0	문자열	'abc\0'
+		w[i].score = 100;
+	}
+
+	printf("\n게임을 시작합니다!!\n");
+	char c;
+	int score = 0;
+	for(int k=0;k<n;k++){
+		while (1) { // => 중단시점 구현하기! (조건확인필수)
+			printf("%s : ", w[k].blind);
+			scanf(" %c", &c);
+			// 행동을 했는지,안했는지 => sw변수
+			int sw = 1;
+			for (int i = 0; i < strlen(w[k].word); i++) {
+				if (c == w[k].word[i]) {
+					w[k].blind[i] = c;
+					sw = 0;
+				}
+			}
+			if (sw) {
+				// 단어를 맞추지못했다.
+				w[k].score -= 10;
+				printf("해당 문자는 없습니다!ㅠ\n");
+			}
+			if (w[k].score == 0 || strcmp(w[k].word, w[k].blind) == 0) {
+				printf("\n정답은 [%s]입니다.\n", w[k].word);
+				score += w[k].score;
+				printf("현재점수는 %d점입니다.\n", score);
+				break;
+			}
+		}
+	}
+	printf("게임이 종료되었습니다.\n");
+	printf("최종 점수는 %d점입니다.\n", score);
+	if (n * 50 <= score) {
+		printf("☆★☆★☆★\n");
+	}
+	/*int comp = 100 * n;
+	if (score >= comp / 2) {
+		printf("★\n");
+	}*/
+
+
+
+	return 0;
+}
+
+
++++++
+
+
+공용체 -> 공간절약
+
+#include <stdio.h>
+//공용체
+union check {
+	int i;
+	char c;
+};
+int main() {
+
+	union check U;
+	printf("공용체 U의 크기는 %d\n", sizeof(U));	//크기 4 i(4)와c(1)의 시작점이 동일
+	//속성들중에 메모리크기가 가장 큰 속성으로 설정된다.
+
+	U.i = 97;
+	printf("i= %d, c= %c\n", U.i, U.c);	//i=97, c=a로 나옴
+	U.c = 'A';
+	printf("i= %d, c= %c\n", U.i, U.c);	//i=65, c=A 메모리공간이 i인지c인지 구별불가
+
+	return 0;
+}
+
+
++++++
+
+열거형 -> 가독성 증가를 위해 활용
+
+#include <stdio.h>
+
+//열거형
+enum WEEK {
+	SUN, MON, TUE, WED, THU, FRI, SAT
+};
+int main() {
+
+	enum WEEK week;
+	week = SUN;
+	printf("%d\n", week);	//0
+	week = SAT;
+	printf("%d\n", week);	//6
+	for (int i = SUN;i <= SAT;i++) {
+		printf("%d ", i);
+	}
+	printf("\n");
+	enum level { low = 10, mid = 50, high = 100 };
+	int exp;
+	scanf("%d", &exp);
+	if (exp < low) {
+		printf("브론즈");
+	}
+	else if (exp < mid) {
+		printf("실버");
+	}
+	else if (exp < high) {
+		printf("골드");
+	}
+	else {
+		printf("플래티넘");
+	}
+
+
+
+
+
+	return 0;
+}
+
+
++++++
+
+다시 studentFile.h이용문제
+
+#include "studentFile.h"	//내가 정의한건 ""안에
+#include <stdlib.h>
+int main() {
+
+	printf("학생수 입력: ");
+	int n;
+	scanf("%d", &n);
+	S *s = (S *)malloc(n * sizeof(S));
+	//학생 구조체 배열이 생성됨
+	for (int i = 0;i < n;i++) {
+		inputS(&s[i], i);
+	}
+	for (int i = 0;i < n;i++) {
+		show(s[i]);
+	}
+	int act;
+	int num;
+	while (1) {
+		printf("1.점수수정 2.원하는학생점수출력 3.프로그램종료\n");
+		printf("번호입력: ");
+		scanf("%d", &act);
+		if (act == 1) {
+			//번호입력 -> 중간,기말 점수수정
+			printf("원하는 학생 번호: ");
+			scanf("%d", &num);
+			inputScores(&s[num-1001]);
+		}
+		else if (act == 2) {
+			//번호입력 -> 중간/기말/평균
+			printf("원하는 학생 번호: ");
+			scanf("%d", &num);
+			show(s[num-1001]);
+		}
+		else {
+			printf("안녕히 가십시오.\n");
+			return 0;
+		}
+	}
+
+
+
+
+	return 0;
+}

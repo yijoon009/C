@@ -1,0 +1,297 @@
+// 배열
+// 2차원배열
+// 문자열
+#include<stdio.h>
+int main() {
+
+	int data[3] = { 1,2,3 };
+
+	// int arr[행][열];
+	int arr[2][3] = { { 1,2,3 }, { 11,12,13 } };
+	for (int a = 0; a < 2; a++) { // 행
+		for (int b = 0; b < 3; b++) { // 열
+			printf("%d ", arr[a][b]);
+		}
+		printf("\n");
+	}
+
+	return 0;
+}
+
++++++
+
+#include<stdio.h>
+int main() {
+
+	/*
+	   학생1  학생2  학생3
+	국
+	영
+	수
+	사
+	과
+	*/
+	int score[5][3];
+	for (int a = 0; a < 5; a++) { // 행
+		for (int b = 0; b < 3; b++) { // 열
+			scanf("%d", &score[a][b]);
+		}
+	}
+	for (int a = 0; a < 5; a++) { // 행
+		for (int b = 0; b < 3; b++) { // 열
+			printf("%d ", score[a][b]);
+		}
+		printf("\n");
+	}
+	// 학생1번의 성적합과 평균(소수점둘째자리까지)출력
+	int sum = 0;
+	for (int i = 0; i < 5; i++) {
+		sum += score[i][0];
+	}
+	printf("학생1번의 합은%d 평균은%.2lf\n", sum, sum*1.0 / 5);
+	// 이번시험의 수학점수평균 출력
+	int avg = 0;
+	for (int i = 0; i < 3; i++) {
+		avg += score[2][i];
+	}
+	printf("수학점수 평균은 %.2lf\n", avg*1.0/3);
+
+	return 0;
+}
+
++++++
+
+// 지뢰찾기게임
+#include<stdio.h>
+#include<stdlib.h>
+#include<time.h>
+int main() {
+
+	int b[9][9];
+	srand(time(NULL));
+	for (int i = 0; i < 9; i++) {
+		for (int j = 0; j < 9; j++) {
+			b[i][j] = rand() % 2;
+		}
+	}
+	for (int i = 0; i < 9; i++) {
+		for (int j = 0; j < 9; j++) {
+			printf("%d ", b[i][j]);
+		}
+		printf("\n");
+	}
+	int x, y;
+	printf("x와 y좌표 입력: ");
+	scanf("%d%d", &x, &y);
+	if (b[x][y] == 1) {
+		printf("펑!\n");
+	}
+	else {
+		int cnt = 0;
+		for (int i = x-1; i < x+2; i++) {
+			for (int j = y-1; j < y+2; j++) {
+				if (i < 0 || i >= 9 || j < 0 || j >= 9) {
+					// 배열은 유효한 인덱스를 다루는것이 중요하다!
+					continue;
+				}
+				if (b[i][j] == 1) {
+					cnt++;
+				}
+				//printf("%d ", b[i][j]);
+			}
+			printf("\n");
+		}
+		printf("%d개\n", cnt);
+	}
+
+	return 0;
+}
+/*
+[9 * 9] 2차원배열 생성하기
+0, 1로 가득 채우기->rand() % 2; 0~1 1:지뢰
+1. x,y 입력 -> 펑
+2. 주변에있는 지뢰 개수 출력 [3개]
+*/
+
+------------------------------------------------------------------------
+
+/*
+5x5 2차원배열
+
+1 2 3 4 5
+6 7 8 9 10
+11 12 13 14 15
+. . . . .
+. . . . 25
+
+1 6 . . .
+2 7 . . .
+3 8 . . .
+4 9 . . 24
+5 10 . . 25
+*/
+#include<stdio.h>
+int main() {
+
+	int data[5][5];
+	int x = 0;
+	for (int i = 0; i < 5; i++) {
+		for (int j = 0; j < 5; j++) {
+			data[i][j] = ++x;
+		}
+	}
+
+	for (int i = 0; i < 5; i++) {
+		for (int j = 0; j < 5; j++) {
+			printf("%3d", data[i][j]);
+		}
+		printf("\n");
+	}
+
+	return 0;
+}
+
++++++
+
+/*
+1. 문자열 자료형이 존재하지않음
+2. "문자배열"
+3. 문자 VS 문자열
+'a' 'B' '+'
+"abc" "kim" "apple"
+4. 문자열 저장
+문자열
+char a[]="kiwi";
+char str[6]="apple";
+{'a','p','p','l','e','\0'(널==NULL)}
+
+문자배열
+char arr[5]={'a','p','p','l','e'};
+*/
+#include<stdio.h>
+#include<string.h>
+int main() {
+
+	char str[10];
+	scanf("%s", str); // 1.[]XXX 2.&xxx
+	//gets(str);
+	printf("%s\n", str);
+
+	// 문자열의 길이를 구하는 함수
+	// 문자열의 마지막(==널)은 제외하고 값을 알려줌
+	int len = strlen(str);
+	printf("문자열길이: %d\n", len);
+
+	// 문자열 복사 함수
+	char str2[10]="banana";
+	/*
+	printf("전: %s %s\n", str, str2);
+	strcpy(str2, str);
+	// 앞의 문자열을 뒤의 문자열로 바꿔치기함
+	// ==뒤의 문자열값이 앞의 문자열에 복사됨
+	printf("후: %s %s\n", str, str2);
+	*/
+
+	// 문자열 붙여넣기 함수
+	/*
+	printf("전: %s %s\n", str, str2);
+	strcat(str, str2);
+	// 앞의 문자열의 데이터를 유지하면서,
+	// 뒤의 문자열을 붙여넣는 함수
+	printf("후: %s %s\n", str, str2);
+	*/
+
+	// 문자열 비교 함수
+	printf("%d", strcmp(str, str2));
+	// 두개의 문자열이 완벽히 일치하면 0을 리턴함
+	// apple vs banana : -1
+	// candy vs banana :  1
+
+	return 0;
+}
+
+
+------------------------------------------------
+#include<stdio.h>
+#include<string.h>
+int main() {
+
+	char str[10];
+	scanf("%s", str);
+	// printf("%d %d %d %d", 'A', 'a', 'Z', 'z');
+	// 65~90, 97~122
+	for (int i = 0; i < strlen(str); i++) {
+		if (65 <= str[i] && str[i]<= 90) { // 대문자일때,
+			str[i] += 32;
+		}
+		else {
+			str[i] -= 32;
+		}
+	}
+	printf("%s", str);
+
+	return 0;
+}
+
++++++
+
+#include<stdio.h>
+#include<string.h>
+int main() {
+
+	char str[10];
+	scanf("%s", str);
+	int move;
+	scanf("%d", &move);
+	for (int i = 0; i < strlen(str); i++) {
+		str[i] += move;
+		if (str[i] > 122) {
+			str[i] -= 26;
+		}
+		else if (str[i] > 90 && 97 > str[i]) {
+			str[i] -= 26;
+		}
+	}
+	printf("%s", str);
+
+	return 0;
+}
+
++++++
+
+#include<stdio.h>
+#include<string.h>
+int main() {
+
+	char str[50];
+	gets(str);
+	int word = 1;
+	for (int i = 0; i < strlen(str); i++) {
+		if (str[i] == ' ') {
+			word++;
+		}
+	}
+	printf("%d", word);
+
+	return 0;
+}
+
++++++
+
+#include<stdio.h>
+#include<string.h>
+int main() {
+
+	char s1[10], s2[20];
+	scanf("%s%s", s1, s2);
+	if (strcmp(s1, s2) > 0) {
+		printf("%s가 %s보다 먼저나온다.\n", s2, s1);
+	}
+	else {
+		printf("%s가 %s보다 먼저나온다.\n", s1, s2);
+	}
+
+	return 0;
+}
+
+

@@ -1,0 +1,189 @@
+wifi 15885890
+공유폴더 win+R -> \\192.168.2.254
+김효경 강사님
+codeup 사이트 과제 모르는건 coding_helper@naver.com
+
+visual studio 2015 보라 ->파일 새로만들기 프로젝트 ->빈프로젝트 ->소스파일에서 우클릭 새항목 
+
+과제 사이트
+
+codeup <- 매일 한문제씩 풀기 
+속성 C ->전처리기-> 편집-> _CRT_SECURE_NO_WARNINGS
+         -> 링커 ->시스템 -> 하위 ->콘솔
+------------------------------------------
+#include<stdio.h>
+int main() {
+
+	printf("안녕하세요\n");
+	printf("저는 김이준입니다.\n\n ");
+	return 0;
+}
+
+\n \t \b 제어문자
+--------------------------------------------
+#include<stdio.h>
+int main() {
+
+	int a, b; //변수 int x,y;도 가능
+	a = 10;
+	b = 20;
+	int sum = a + b;
+	printf("a와 b의 합은 %d\n", sum);
+
+	return 0;
+}
+
+변수명 규칙
+=식별자 이름규칙=
+1. 띄어쓰기 X
+2. 특수문자 X ( _ $는 가능)
+3. 숫자로 시작하면 안돼
+4. 대소문자를 구별한다.
+5. 이미 있는 단어X (int return 이런거 안돼, 키워드/변수명=식별자)
+
+//한줄메모
+/**/ 여러줄 메모
+
+%d는 형식지정자 ( 나 대신 다른 정수를 보내)
+printf("a와 b의 합은 %d %d\n",100, sum); 이러면 a와b의 합은 100 30 이렇게 나옴
+ 
+------------------------------------------------------
+정수 int
+소수 double
+문자 char '' (""는 printf에서 씀)
+--------------------------------------------------------------
+#include<stdio.h>
+int main() {
+
+	int i = 100;
+	double d = 3.14;
+	char c = 'a';
+	printf("정수:%-4d\n소수:%.3lf\n문자:%c \n\n", i, d, c);
+	/*형식지정자로 출력컨트롤 가능
+	%d 사이에 숫자입력하면 차지할 칸 수, -면 앞에부터 표시
+	%lf 사이에 .3하면 소숫점 세자리까지만 표현*/
+
+	//입력
+	int a, b;
+	printf("a를 입력하세요: ");
+	scanf("%d", &a);   //&:해당변수의 주소[메모리상의]
+	printf("b를 입력하세요: ");
+	scanf("%d", &b);
+
+	int sum = a + b;
+	printf("a와 b의 합은 %d이다.\n", sum);
+
+	return 0;
+}
+-------------------------------------------------------------
+printf("\"hello\""); \' 이거 쓰면 '그대로 출력돼
+
+#include<stdio.h>
+#define RATE 1.2 //기호상수=사용자 정의상수
+int main() {
+
+	/*double d = 1.0;
+	printf("%lf\n", d + RATE);*/
+
+	/*printf("pw\t:______\b\b\b\b"); // \b는 커서를 뒤로 보내는거 \t는 탭
+	int pw;
+	scanf("%d", &pw);
+	*/
+
+	//상수
+	/* const double PI = 3.14; //const는 고정 / 심볼릭상수
+	int radius;
+	scanf("%d", &radius);
+	printf("원의 넓이:%lf\n", radius*radius*PI);*/
+
+----------------------------------------------------------------------
+#include<stdio.h>
+int main() {
+
+	//내가한거
+	double a, b;
+	scanf("%lf", &a);
+	scanf("%lf", &b);
+	double sum = a + b;
+	printf("두 실수의 합은: %lf\n", sum);
+
+	//강사님
+	//scanf("%lf%lf", &a, &b); 이것도 가능
+	return 0;
+}
+------------------------------------------------------------
+#include<stdio.h>
+int main() {
+
+	int a, b;
+	printf("a의 값을 입력하세요 :");
+	scanf("%d", &a);
+	printf("b의 값을 입력하세요 :");
+	scanf("%d", &b);
+	int res = a*b;
+	printf("%d 와/과 %d 을/를 곱하면 %d입니다.\n\n", a, b, res);
+	//printf("%d 와/과 %d 을/를 곱하면 %d입니다.\n\n", a, b, a*b);
+	return 0;
+}
+--------------------------------------------------------------
+10/3=3 몫
+10%3=1 나머지
+#include<stdio.h>
+int main() {
+
+	//연산자
+	int a;
+	int b;
+	scanf("%d%d", &a, &b);
+	printf("a+b=%d\n", a + b);
+	printf("a-b=%d\n", a - b);
+	printf("a*b=%d\n", a * b);
+	printf("a/b=%d\n", a / b);
+	printf("a%%b=%d\n", a % b);
+	return 0;
+}
+-----------------------------------------------------
+#include<stdio.h>
+int main() {
+
+	int apple_price, apple_num;
+	printf("사과의 가격을 입력하세요: ");
+	scanf("%d", &apple_price);
+	printf("몇개 구매하시겠습니까? ");
+	scanf("%d", &apple_num);
+	int a_sum = apple_num*apple_price;
+	int banana_price, banana_num;
+	printf("바나나의 가격을 입력하세요: ");
+	scanf("%d", &banana_price);
+	printf("몇개 구매하시겠습니까? ");
+	scanf("%d", &banana_num);
+	int b_sum = banana_num*banana_price;
+	int sum = a_sum + b_sum;
+	//sum=sum+(b_price*b_num) 으로 해도 가능. apple을 sum으로 해서.
+	//복합대입연산자 sum =sum+x
+	//				sum += x
+	//sum += (b_price*b_num);
+	printf("총 가격은 %d원입니다.\n\n", sum);
+	return 0;
+}
+복합대입연산자
++=
+-=
+*=
+/=
+%=
+---------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+

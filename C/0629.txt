@@ -1,0 +1,454 @@
+#include <stdio.h>
+
+check함수 만들어보기 
+
+int check(int n) {
+	
+	return n % 2;
+}
+int main() {
+
+	int n;
+	scanf("%d", &n);
+	if (check(n) == 0) {
+		printf("%d는 짝수입니다.", n);
+	}
+	else {
+		printf("%d는 홀수입니다.", n);
+	}
+	return 0;
+}
+
+
+++++++++
+
+
+우절단 %
+좌절단 /
+
+1234 에서 천의자리수만 필요해. 그럼 1234/1000 ==>1
+
+1234입력하면 각 자릿수의 합이 10이다. 10을 출력
+n=1234
+while() {
+res+=(n%10)	//4
+n=n/10	//1234->123
+}
+res+=(n%10)	//4+3
+n/=10	//123->12
+
+
+++++++++
+
+
+정수 n입력, 모든자리수의 합 출력
+#include <stdio.h>
+int main() {
+
+	int n;
+	int res = 0;
+	scanf("%d", &n);
+	while (1) {	//while(n!=0)  종료조건의 반대
+		res += n % 10;
+		n /= 10;
+		if (n == 0) {
+			break;
+		}
+	}
+	printf("%d", res);
+
+	return 0;
+}
+
+
+++++++++
+
+
+함수를 사용할때에는
+1- input과
+2- output을 보자!
+
+#include <stdio.h>
+#include <math.h>
+
+int main() {
+
+	printf("%d ", abs(10));
+	printf("%d ", abs(-10));
+	printf("%lf ", sqrt(25.0));
+	printf("%.0lf ", pow(3.0, 3.0));
+	return 0;
+}
+
+
+++++++++
+
+
+두 점의 x,y좌표가 각각 int형으로 저장될때, 
+두 점 사이의 거리를 보여주세요. (.2까지 표현)
+
+내가한거
+	int x1, y1;
+	int x2, y2;
+	scanf("%d%d%d%d", &x1, &y1, &x2, &y2);
+
+	//두 점의 x,y좌표가 각각 int형으로 저장될때,
+	//두 점 사이의 거리를 보여주세요. (.2까지 표현)
+
+	int h = y2 - y1;
+	int w = x2 - x1;
+	int d1 = pow(h*1.0, 2.0) + pow(w*1.0, 2.0);
+	printf("%.2lf", sqrt(d1*1.0));
+
+강사님
+
+#include<stdio.h>
+#include<math.h>
+int main() {
+
+	int x1, y1;
+	int x2, y2;
+
+	printf("점1의 x,y좌표입력: ");
+	scanf("%d%d", &x1, &y1);
+	printf("점2의 x,y좌표입력: ");
+	scanf("%d%d", &x2, &y2);
+
+	// 루트((x1-x2)^2+(y1-y2)^2)
+
+	printf("두점 사이의 거리는 %.2lf입니다.\n", sqrt(pow((x1 - x2)*1.0, 2.0) + pow((y1 - y2)*1.0, 2.0)));
+
+	return 0;
+}
+
+
++++++++++
+
+
+재귀함수==재귀호출==순환호출==순환함수
+그림그리면서 풀기!!!
+
+<팩토리얼>
+N!=Nx(N-1)x...2x1
+5!=5x4x3x2x1=120
+5!=5*4!
+4!=4*3!
+f(n)=n*f(n-1)
+
+#include <stdio.h>
+
+int fac(int n) {
+	if (n == 1) return 1;
+	
+	return n*fac(n - 1);
+
+}
+int main() {
+
+	printf("%d", fac(5));
+	return 0;
+}
+
+
++++++++++
+
+
+정수1개 입력 12345 or 357
+이거를 5 4 3 2 1로 출력 7 5 3
+어떤 정수를 입력받았을때 일의 자리를 출력하는 재귀함수
+show(n)
+
+#include <stdio.h>
+
+void show(int n) {
+	if (n == 0) return;
+	printf("%d ", n % 10);	//1의자리 표시
+	show(n / 10);	//1의자리 버리고 1234면 123만 남겨둠
+}
+int main() {
+
+	int n;
+	scanf("%d", &n);
+	show(n);
+	return 0;
+}
+
+
++++++++++
+
+
+함수의 한계 -> 포인터* 
+[값에 의한 호출]의 한계다
+[참조에 의한 호출]로 바꿔야한다.
+
+#include<stdio.h>
+// 함수의 한계 -> 포인터*
+// (1. return값이 2개이상일때)
+// (2. main()함수에 직접적인 영향을 주고싶을때)
+// [값에 의한 호출]의 한계다!
+// [참조에 의한 호출]
+void swap(int *a, int *y) {
+	int tmp = *a; // 교환할때 [꼭] 필요한 임시저장변수
+	*a = *y;
+	*y = tmp;
+}
+int main() {
+
+	int x = 10, y = 20;
+	printf("%d %d\n", x, y);
+	swap(&x, &y);
+	printf("%d %d\n", x, y);
+
+	return 0;
+}
+
+
++++++++++
+
+
+1부터 만까지 정수중에서 소수인 정수를 모두 출력해주세요.
+어떤 정수를 입력받아서 약수개수를 리턴하는 함수 int sosu(int n);이용해야함.
+int sosu(int n); ->  n의 약수개수를 return 하는 함수
+
+#include <stdio.h>
+
+int sosu(int n) {
+	int cnt = 0;
+	for (int i = 1; i <= n; i++) {
+		if (n%i == 0) {
+			cnt++;
+		}
+	}
+	return cnt;
+}
+int main() {
+
+	for (int i = 1; i <= 10000; i++) {
+		if (sosu(i) == 2) {
+			printf("%d ", i);
+		}
+		
+	}
+
+	return 0;
+}
+
+
++++++++++
+
+
+우절단소수(1~10000)
+만약 313이 소수일때 31도 소수이고 3도 소수인것같은것만 출력
+13은 출력되면 안돼. 1은 소수가 아니기때문
+23은 출력 가능
+
+#include <stdio.h>
+
+int sosu(int n) {
+	int cnt = 0;
+	for (int i = 1; i <= n; i++) {
+		if (n%i == 0) {
+			cnt++;
+		}
+	}
+	return cnt;
+}
+int main() {
+
+	for (int i = 1; i <= 10000; i++) {
+		int ii = i;	//for문을 제어하는 제어변수는 훼손되어서는 안되기때문에 필요
+		while (sosu(ii) == 2) {
+			ii /= 10;
+			if (ii == 0) {
+				//여기까지 들어오면 우절단소수이다.
+				printf("%d ", i);
+				break;
+			}
+		}
+	}
+	return 0;
+}
+
+
++++++++++
+
+
+업/다운 게임
+1. rand()%2 //0~1까지 랜덤의 수 
+랜덤으로 1~100중에 숫자 하나를 만들어주세요.
+2. 랜덤수가 40일때 50입력하면 다운! 출력/ 30입력하면 업!
+3. 40입력하면 정답입니다~! %d번만에 맞추셨습니다!!
+
+함수 무조건 1개이상 쓸것
+
+내가한거 다시해야해
+#include <stdio.h>
+#include<stdlib.h>
+#include<time.h>
+
+void check(int n, int a) {
+	if (n < a) {
+		printf("업!\n");
+	}
+	else if (n > a) {
+		printf("다운!\n");
+	}
+	else {
+		printf("정답입니다~! %d번만에 맞추셨습니다.", cnt);
+		break;
+	}
+}
+
+}
+
+
+int main() {
+
+	srand(time(NULL));
+	int a = rand() % 100 + 1;
+	while (1) {
+		int n;
+		scanf("%d", &n);
+		check(n,a);
+		
+	return 0;
+}
+
+강사님
+
+#include <stdio.h>
+#include<stdlib.h>
+#include<time.h>
+
+int check(int x,int num){
+	return x < num;
+}
+
+
+int main() {
+
+	srand(time(NULL));
+	int num = rand() % 100 + 1;
+	int x;
+	int cnt = 0;
+	while (1) {
+		printf("답입력: ");
+		scanf("%d", &x);
+		cnt++;
+		if (x == num) {
+			printf("정답입니다! %d번만에 맞추셨습니다.\n", cnt);
+			break;
+		}
+		else if (check(x, num) > 0) {
+			printf("업!\n");
+		}
+		else {
+			printf("다운!\n");
+		}
+	}
+	return 0;
+}
++++++++++
+1~100중에 입력하세요.
+답입력: 50
+업!
+51~100중에 입력하세요.
+답입력: 75
+다운!
+51~75중에 입력하세요.
+답입력: __
+
+#include <stdio.h>
+#include<stdlib.h>
+#include<time.h>
+
+int check(int x,int num){
+	return x < num;
+}
+
+
+int main() {
+
+	srand(time(NULL));
+	int num = rand() % 100 + 1;
+	int x;
+	int cnt = 0;
+	int s = 1, e = 100;
+	while (1) {
+		printf("%d~%d중에 입력하세요.\n", s, e);
+		printf("답입력: ");
+		scanf("%d", &x);
+		cnt++;
+		if (x == num) {
+			printf("정답입니다! %d번만에 맞추셨습니다.\n", cnt);
+			break;
+		}
+		else if (check(x, num) > 0) {
+			printf("업!\n");
+			s = x + 1;
+		}
+		else {
+			printf("다운!\n");
+			e = x - 1;
+		}
+	}
+	return 0;
+}
+
+
++++++++++
+
+
+범위 사이의 숫자를 입력하시 않았을때,
+1. "잘못입력하셨습니다."
+2. s, e 변경 X / cnt++; 안함
+
+#include <stdio.h>
+#include<stdlib.h>
+#include<time.h>
+
+int check(int x,int num){
+	return x < num;
+}
+
+int main() {
+
+	srand(time(NULL));
+	int num = rand() % 100 + 1;
+	int x;
+	int cnt = 0;
+	int s = 1, e = 100;
+	while (1) {
+		printf("%d~%d중에 입력하세요.\n", s, e);
+		printf("답입력: ");
+		scanf("%d", &x);
+		if (s > x || x > e) {
+			printf("잘못입력하셨습니다.\n");
+			continue;
+		}
+		cnt++;
+		if (x == num) {
+			printf("정답입니다! %d번만에 맞추셨습니다.\n", cnt);
+			break;
+		}
+		else if (check(x, num) > 0) {
+			printf("업!\n");
+			s = x + 1;
+		}
+		else {
+			printf("다운!\n");
+			e = x - 1;
+		}
+	}
+	return 0;
+}
+
+
+
+
+
+
+
+
+
+

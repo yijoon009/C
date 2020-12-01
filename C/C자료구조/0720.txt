@@ -1,0 +1,306 @@
+#include <stdio.h>
+#include <stdlib.h>
+typedef struct student {
+	char name[10];
+	int score;
+	int num;
+}S;
+void inputS(S *s,int index,int num) {
+	printf("학생이름 입력: ");
+	scanf("%s", s[index].name);
+	printf("성적입력: ");
+	scanf("%d", &s[index].score);
+	s[index].num = num;
+	
+}
+void show(S *s, int index) {
+	for (int i = 0;i < index;i++){
+		printf("%d. %s : %d점\n", s[i].num, s[i].name, s[i].score);
+	}
+}
+void f4(S *s, int index, int a) {
+	for (int i = 0;i < index;i++) {
+		if (s[i].num == a) {
+			//성적 수정 진행
+			printf("%s학생의 성적재입력: ", s[i].name);
+			scanf("%d", &s[i].score);
+			return;
+		}
+	}
+	printf("일치하는 번호가 없습니다.!\n");
+}
+int main() {
+
+	int n;
+	scanf("%d", &n);	//학생수
+	S *stu = (S *)malloc(n * sizeof(S));
+	int index = 0;	//지금까지 몇명입력했는지 / 수위,인덱스번호
+	int act;
+	int num = 1001;
+	
+	//1001, 1002, 이 뒤에  1001 삭제하고 입력해도 1003으로 등록된다.
+	while (1) {
+		printf("1.입력 2.삭제 3.출력 4.수정 5.종료\n");
+		printf("수행할 번호입력: ");
+		scanf("%d", &act);
+		if (act == 1) {
+			//최초생성한 학생수보다 더 많이 입력할수없음!
+			if (index == n) {
+				printf("더이상 입력불가\n");
+				continue;
+			}
+			inputS(stu,index,num);
+			index++;
+			num++;
+			
+		}
+		else if (act == 2) {
+			//-1명 불가능
+			//가장 마지막에 추가한 학생 삭제
+			if (index == 0) {
+				printf("더이상 삭제불가\n");
+				continue;
+			}
+			index--;
+		}
+		else if (act == 3) {
+			show(stu, index);
+		}
+		else if (act == 4) {
+			//수정할 학생의 번호입력 -> 성적수정가능
+			printf("수정할 학생의 번호입력: ");
+			int a;
+			scanf("%d", &a);
+			f4(stu,index,a);
+		}
+		else {
+			printf("프로그램종료\n");
+			break;
+		}
+	}
+
+
+
+
+	return 0;
+}
+
+
++++++
+
+
+조세퍼스 순열
+
+1. 절대사용하지 않을 데이터 입력
+1 2 3 4 5 6 7
+3출력했으면 그 자리에
+1 2 0 4 5 6 7
+만약 0이라면 카운팅하지말아주세요
+1 2 0 4 5 0 7
+->배열로 푼 경우
+
+
+#include <stdio.h>
+#include <stdlib.h>
+int check(int *d,int a) {
+	for (int i = 0;i < a;i++) {
+		if (d[i] != 0) {
+			return 1;
+		}
+	}
+	return 0;
+}
+int main() {
+
+	int a, b;
+	scanf("%d%d", &a, &b);
+	int *data = (int *)malloc(a * sizeof(int));
+	for (int i = 0;i < a;i++) {
+		data[i] = i + 1;
+	}
+	int i = 0;
+	int cnt = 0;
+	while (check(data,a)) {
+		if (data[i] == 0) {
+			i++;
+			if (i == a) {
+				i = 0;
+			}
+			continue;
+		}
+		cnt++;
+		if (cnt == b) {
+			cnt = 0;
+			printf("%d ", data[i]);
+			data[i] = 0;
+		}
+		i++;
+		if (i == a) {
+			i = 0;
+		}
+	}
+
+
+	return 0;
+}
+
+
+-----
+
+
+리스트
+
+배열, 구조체배열 -> 삽입과 삭제가 불편, 크기가 고정되어있음.
+리스트==연결리스트==선형리스트==linked list
++) 공간효율이 좋아짐
+
+배열 vs 리스트
+:1번 a,2번 b => [0] a, [1] b, ...
+:a 다음에 b, b다음에 c, ...
+[노드] == NODE
+데이터필드와 주소필드 나뉨
+
+
+#include <stdio.h>
+#include <stdlib.h>
+typedef struct NODE {
+	int data;	//데이터부, 데이터필드
+	struct NODE* next;	//주소부, 주소필드, 링크필드 / 자기랑 똑같이 생긴애 포인터 넥스트
+}N;	//자기참조 구조체
+
+int main() {
+
+	N *head = (N*)malloc(sizeof(N));	//1 * sizeof(N)
+
+	N *node1 = (N*)malloc(sizeof(N));
+	node1->data = 100;
+	head->next = node1;	//node1->data 이거아니야. int 가르키는것처럼 보여
+
+	N *node2 = (N*)malloc(sizeof(N));
+	node2->data = 200;
+	node1->next = node2;
+
+	node2->next = NULL;	//int 배열 안에 값으로 넣는 경우 없음.
+
+	N *p = head->next;	//*p 순회용 포인터, 방문용 포인터(쓰고버릴것)	/	hear->next 는 node1 쓴거랑 동일
+	while (p != NULL) {
+		printf("%d ", p->data);
+		p = p->next;
+	}
+
+
+
+	return 0;
+}
+
+
++++++
+
+
+
+#include <stdio.h>
+#include <stdlib.h>
+typedef struct NODE {
+	int data;
+	struct NODE* next;
+}N;
+
+int main() {
+
+	N *head = (N *)malloc(sizeof(N));
+
+	N *node1 = (N *)malloc(sizeof(N));
+	node1->data = 11;
+	head->next = node1;
+	
+	N *node2 = (N *)malloc(sizeof(N));
+	node2->data = 12;
+	node1->next = node2;
+
+	N *node3 = (N *)malloc(sizeof(N));
+	node3->data = 13;
+	node2->next = node3;
+
+	N *node4 = (N *)malloc(sizeof(N));
+	node4->data = 14;
+	node3->next = node4;
+
+	node4->next = NULL;
+
+	N *p = head->next;
+	while (p != NULL) {
+		printf("%d ", p->data);
+		p = p->next;
+	}
+
+
+
+	return 0;
+}
+
+
++++++
+
+
+함수화 해서 무제한사용
+
+#include <stdio.h>
+#include <stdlib.h>
+typedef struct NODE {
+	int data;
+	struct NODE* next;
+}N;
+void add(N *root, int data) {
+	N *node = (N*)malloc(sizeof(N));
+	node->data = data;
+	node->next = NULL;
+	//여기까지 노드생성
+	
+	//"마지막 노트의 next"가 매번 새로운 노드를 가리킬수있도록 해야함!
+	N *p = root;
+	while (p->next != NULL) {	//마지막 노드를 찾기위해 p->next. p전 상황에서 알아야해
+		p = p->next;
+		printf("%d ", p->data);
+	}
+	p->next = node;
+	printf("\n----\n")
+}
+int main() {
+
+	N *head = (N*)malloc(sizeof(N));
+	head->next = NULL;
+	int act;
+	while (1) {
+		printf("1.삽입 2.삭제 3.출력 4.종료\n");
+		printf("번호입력: ");
+		scanf("%d", &act);
+		if (act == 1) {
+			int data;
+			printf("데이터입력: ");
+			scanf("%d", &data);
+			add(head, data);
+		}
+		else if (act == 2) {
+
+		}
+		else if (act == 3) {
+
+		}
+		else  {
+			printf("프로그램 종료\n");
+			break;
+		}
+
+	}
+
+
+	return 0;
+}
+
+
++++++
+
+1. 출력
+2. 중복없이, 오름차순으로 입력
+3. 삭제
+4. 없는데이터 삭제는 불가

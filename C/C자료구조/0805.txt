@@ -1,0 +1,252 @@
+    10p
+  5     15c
+2  8      20
+
+<자식이 하나있는 노드 어떻게 삭제할지?>
+ex. 15
+
+-삭제할 노드에게 왼/오 자식이 있는지 확인
+-부모가 c를 왼쪽으로 갖고있는지 오른쪽으로 갖고있었는지 확인
+
+
++++++++
+
+
+     10
+  5     15
+2  8p       20
+  6c  9
+   7
+
+자식노드가 두개 다 있는 경우
+ex.5
+
+1. 6의 오른쪽 자식을 6자리에 둔다.
+2. 6(값)을 기억해 뒀다가 p에 채워넣는다
+
+-삭제할 데이터의 오른쪽 노드들 중에서 가장 작은 데이터(맨 왼쪽데이터)를 찾아서 올려야 한다. for 전체 트리를 훼손하지 않기위해
+
+
+// 트리->노드들의 집합/사이클이 없음
+// 이진트리->자식이 2개==주소부가 2개/binary tree
+// root->최상위 노드/부모노드가 없음
+// leaf->최하위 노드/자식노드가 없음
+#include<stdio.h>
+#include<stdlib.h>
+typedef struct NODE {
+	int data;
+	struct NODE* left;
+	struct NODE* right;
+}N;
+N* create(N* node, int data) {
+	if (node == NULL) {
+		node = (N*)malloc(sizeof(N));
+		node->data = data;
+		node->left = NULL;
+		node->right = NULL;
+	}
+	else {
+		if (node->data > data) {
+			node->left = create(node->left, data);
+		}
+		else {
+			node->right = create(node->right, data);
+		}
+	}
+	return node;
+}
+void preorder(N* node) {
+	// 전위순회
+	if (node != NULL) {
+		printf("%d ", node->data);
+		preorder(node->left);
+		preorder(node->right);
+	}
+	/*
+	 1
+	2 3
+	*/
+}
+void inorder(N* node) {
+	// 중위순회
+	if (node != NULL) {
+		inorder(node->left);
+		printf("%d ", node->data);
+		inorder(node->right);
+	}
+	/*
+	 2
+	1 3
+	*/
+}
+void postorder(N *node) {
+	// 후위순회
+	if (node != NULL) {
+		postorder(node->left);
+		postorder(node->right);
+		printf("%d ", node->data);
+	}
+	/*
+	 3
+	1 2
+	*/
+}
+void del(N* node, int data) {
+	N *c = node;	//지금보고 있는 노드(맨처음엔 root)
+	N *p = NULL; // parent
+	while (c != NULL && c->data != data) {
+		p = c;
+		c = data < c->data ? c->left : c->right;
+	}
+	if (c == NULL) {
+		printf("삭제할노드가없음!\n");
+		return;
+	}
+	if (c->left == NULL && c->right == NULL) {
+		// 삭제할 노드가 리프노드일때
+		if (p->left == c) {
+			p->left = NULL;
+		}
+		else {
+			p->right = NULL;
+		}
+	}
+	else if (c->left == NULL || c->right == NULL) {
+		//삭제할 노드가 하나의 자식노드를 갖는 경우
+		if (p->left == c) {
+			//부모의 왼쪽노드 삭제경우
+			c = c->left != NULL ? c->left : c->right;
+			p->left = c;
+		}
+		else {
+			//부모의 오른쪽 노드 삭제경우
+			c = c->left != NULL ? c->left : c->right;
+			p->right = c;
+		}
+	}
+	else {
+		//삭제할 노드가 두개의 자식노드를 갖는 경우->오른쪽 자식들 중에서 가장 작은 노드를 찾자!
+		//5p 8c 로 다시시작
+		N *subp = c;	//현재 내가 삭제할 애
+		N *subc = c->right;	//삭제할 애의 오른쪽
+		while (subc->left != NULL) {
+			//subc->left == NULL일때 종료되어야 해
+			subp = subc;
+			subc = subc->left;
+		}
+		if (c == subp) {	//while을 한번도 돌지 않았을때, 8이 제일 작은수일때
+			c->right = subc->right;
+		}
+		else {
+			subp->left = subc->right;	//7을 6의자리에 갖다 놔라
+		}
+		c->data = subc->data;	//5에 6넣어줘
+	}
+
+}
+int main() {
+
+	N *root = NULL;
+	int act;
+	while (1) {
+		printf("1.노드생성 2.전위순회 3.중위순회 4.후위순회 5.노드삭제 6.종료\n");
+		scanf("%d", &act);
+		if (act == 1) {
+			int data;
+			printf("데이터입력: ");
+			scanf("%d", &data);
+			root = create(root, data);
+		}
+		else if (act == 2) {
+			preorder(root); // 전위순회
+			printf("\n");
+		}
+		else if (act == 3) {
+			inorder(root); // 중위순회
+			printf("\n");
+		}
+		else if (act == 4) {
+			postorder(root); // 후위순회
+			printf("\n");
+		}
+		else if (act == 5) {
+			int data;
+			printf("삭제할데이터입력: ");
+			scanf("%d", &data);
+			del(root, data);
+		}
+		else {
+			printf("프로그램종료\n");
+			break;
+		}
+	}
+
+	return 0;
+}
+
+
++++++++
+
+1.독해=> input/output
+2.문제의 입출력에 맞춰서 코딩
+3.알고리즘->일반적인 경우=>예외
+4.배열,   구조체,   리스트, 	스택     큐	트리
+삽입삭제불리    검색불리,삽입삭제원활  실행/취소  예약제   하나가 두개이상의 데이터 갖고있을때
+
+
+실전문제1
+
+#include<stdio.h>
+#include<stdlib.h>
+int main() {
+
+	int n;
+	scanf("%d", &n);
+	int res=0;
+	int act;
+	int *A = (int *)malloc(n * sizeof(int));	//stack_a
+	int *T = (int *)malloc(n * sizeof(int));
+	int index = 0;
+
+	for (int i = 0;i < n;i++) {
+		scanf("%d", &act);
+		if (act) {
+			//push
+			scanf("%d%d", &A[index],&T[index]);	//index=-1로 시작했으면 ++index로 해야해
+			T[index]--;
+			index++;
+			
+		}
+		else {
+			T[index - 1]--;
+		}
+		if (T[index-1] == 0) {
+			//pop
+			res += A[index - 1];
+			index--;
+		}
+	}
+
+	printf("최종점수: %d\n", res);
+
+	
+
+
+	return 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

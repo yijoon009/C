@@ -1,0 +1,366 @@
+1. 띄어쓰기 없이 단어열 입력
+aPpLecakE
+이때 대소문자를 바꿔서 출력
+ApPlECAKe
+
+#include <stdio.h>
+#include <string.h>
+int main() {
+
+	char str[10];
+	scanf("%s", str);	//& 없고 [] 안써도 돼
+	
+	for (int i = 0; i < strlen(str); i++) {
+		if (str[i] >= 65 && str[i] <= 90) {
+			str[i] += 32;
+		}
+		else {
+			str[i] -= 32;
+		}
+		
+	}
+	printf("%s", str);
+
+
+	return 0;
+}
+
+
++++++++++
+
+
+2. 띄어쓰기 있는 문자열 입력받았을때 
+입력받은 알파벳 개수출력
+
+#include <stdio.h>
+#include <string.h>
+int main() {
+
+	char str[51];	//null문자때문에 51이 정확함
+	gets(str);
+	char x;
+	int cnt = 0;
+	scanf(" %c", &x);	//안정성 문제로 c 입력할땐 꼭 앞에 한칸 띄어라
+	for (int i = 0; i < strlen(str); i++) {
+		if (x == str[i]) {
+			cnt++;
+		}
+	}
+	printf("%d", cnt);
+
+	return 0;
+}
+
+
++++++++++
+
+
+띄어쓰기가 있는 문자열 입력
+사용된 a~z까지의 개수, 사용하지 않아도 0으로 출력
+
+#include <stdio.h>
+#include <string.h>
+int main() {
+
+	char str[81];
+	gets(str);
+	int al[26] = { 0, };
+	for (int i = 0; i < strlen(str); i++) {
+		al[str[i] - 97]++;
+	}
+	for (int j = 0; j < 26; j++) {
+		printf("%c : %d\n",j+97 ,al[j]);
+	}
+	
+	return 0;
+}
+
+
++++++++++
+
+
+자료형변환_함수문제
+-b/a=x 구하는거
+
+#include <stdio.h>
+double function(int a, int b) {
+	return -b / a*1.0;	//(-1.0)*b/a도 가능
+}
+
+int main() {
+
+	int a, b;
+	scanf("%d%d", &a, &b);
+	printf("%.4lf", function(a, b));
+	
+	return 0;
+}
+
+
++++++++++
+
+
+배열(1)(2)
+
+#include <stdio.h>
+
+int main() {
+
+	int data[10];
+	int num;
+	scanf("%d", &num);
+	for (int i = 0; i < num; i++) {
+		scanf("%d", &data[i]);
+	}
+	int min = data[1] - data[0];
+	if (num < 2) {
+		printf("ERROR\n");
+		return 0;
+	}
+	for (int i= 0; i < num - 1; i++) {
+		if (data[i + 1] - data[i] < 0 || data[i]<0) {
+			printf("ERROR\n");
+			return 0;	//즉시종료(미니멈 출력안한게)
+		}
+		if (min > data[i + 1]-data[i] ) {
+			min = data[i + 1] - data[i];
+		}
+	}
+	printf("%d", min);
+	
+	return 0;
+}
+
+
++++++++++
+
+
+파일입출력
+.txt
+
+파일>열기>프로젝트/솔루션>현재 파일위치를 복사해서 다른 창에 열어봐>               소스.cpp 있는곳에 새로만들기 텍스트만들기
+> input.txt 만들어 (보기>파일확장명 체크) 그 안에 100 입력
+
+#include <stdio.h>
+
+int main() {
+
+	//[스트림] => FILE* (가변적인 자료형)
+	//열고>입력받고>사용후>닫기
+
+	FILE* in=fopen("input.txt","r");	//f(ile)open "read"
+	//읽기모드: r
+	//쓰기모드: w
+	int num;
+	fscanf(in, "%d", &num);
+	printf("%d", num);
+
+	return 0;
+}
+
+
+++++++++
+
+
+#include <stdio.h>
+
+int main() {
+
+	//[스트림] => FILE* (가변적인 자료형)
+	//열고>입력받고>사용후>닫기
+
+	FILE* in=fopen("input.txt","r");	//f(ile)open "read"
+	//읽기모드: r
+	//쓰기모드: w
+	int a;
+	double b;
+	char c;
+	char d[10];
+	fscanf(in, "%d", &a);
+	fscanf(in, "%lf", &b);
+	fscanf(in, " %c", &c);
+	fscanf(in, "%s", d);
+
+	printf("%d %lf %c %s", a,b,c,d);
+
+	FILE* out = fopen("output.txt", "w");
+	//fprintf(out, "%d", num);	//fprintf(out, "안녕"); 이것도 가능
+	fprintf(out, "%d %lf %c %s", a, b, c, d);
+
+
+	return 0;
+}
+
+
+++++++
+
+
+input에 
+kim
+10 80 54
+저장하고 output에
+평균.2저장
+
+#include <stdio.h>
+
+int main() {
+
+	FILE* in=fopen("input.txt","r");
+
+	char name[10];
+	int data[3];
+	int sum = 0;
+	fscanf(in, "%s", name);
+	for (int i = 0; i < 3; i++) {
+		fscanf(in, "%d", &data[i]);
+		sum += data[i];
+	}
+	
+	FILE* out = fopen("output.txt", "w");
+	fprintf(out, "%s의 평균점수는 %.2lf입니다.", name,sum/3.0);
+
+	return 0;
+}
+
+
+++++++
+
+	FILE* in=fopen("input.txt","r");
+
+	int num;
+	while (!feof(in)) {	//file end of file
+		
+		fscanf(in, "%d", &num);
+		printf("%d ", num);
+	}
+
+
++++++
+
+
+인풋의 총합과 평균.2 아웃풋에 저장
+
+#include <stdio.h>
+
+int main() {
+
+	FILE* in=fopen("input.txt","r");
+	int num;
+	int sum = 0;
+	int cnt = 0;
+	while (!feof(in)) {	//file end of file
+		fscanf(in, "%d", &num);
+		sum += num;
+		cnt++;
+	}
+	
+	FILE* out = fopen("output.txt", "w");
+	fprintf(out, "합은 %d이고 평균은 %.2lf입니다.", sum, sum / cnt*1.0);
+
+	return 0;
+}
+
+
++++++
+
+
+ABC.txt에 1~100중 숫자 하나 입력
+1~100
+	이름입력: kin
+	1~100 : 50
+	업/다운
+
+	정답입니다.
+아웃풋에
+kim님이 몇번만에 정답을 맞추셨습니다.
+
+#include<stdio.h>
+int game(int ans) {
+	int x;
+	int cnt = 0;
+	while (1) {
+		printf("답입력: ");
+		scanf("%d", &x);
+		cnt++;
+		if (x == ans) {
+			printf("정답입니다!\n");
+			return cnt;
+		}
+		else if (x < ans) {
+			printf("업!\n");
+		}
+		else {
+			printf("다운!\n");
+		}
+	}
+}
+int main() {
+
+	FILE* in=fopen("ABC.txt","r");
+	int ans;
+	fscanf(in, "%d", &ans);
+	printf("이름입력: ");
+	char name[10];
+	scanf("%s", name);
+	int cnt = game(ans);
+
+	/*
+	1~100
+		이름입력: kim
+		1~100 : 50
+		업 / 다운
+
+		정답입니다!
+	kim 님이 N번만에 정답을 맞추셨습니다.
+	*/
+
+	FILE* out = fopen("output.txt", "w");
+	fprintf(out, "%s님이 %d번만에 정답을 맞추셨습니다.\n", name, cnt);
+
+	return 0;
+}
+
+
+
+++++++
+
+
+인풋파일에 문자열 1개를 저장 (대소문자 섞임)
+인풋에 문자열 입력 ABZabz 하고 저장
+
+cmd창에 정수1개 입력
+그만큼 밀어서 아웃풋에 저장
+ABZabz => CDBcdb
+
+#include <stdio.h>
+#include <string.h>
+int main() {
+
+	FILE* in=fopen("input.txt","r");
+	char str[20];
+	fscanf(in, "%s", str);
+	int move;
+	scanf("%d", &move);
+	for (int i = 0; i < strlen(str); i++) {
+		
+		if (str[i] >=65 && str[i] <= 90) {
+			str[i] +=move;
+			if (str[i] > 90) {
+				str[i] -= 26;
+			}
+		}
+		else {
+			str[i] += move;
+			if (str[i] > 122) {
+				str[i] -= 26;
+			}
+		}	
+	}
+	FILE* out = fopen("output.txt", "w");
+	fprintf(out, "%s", str);
+
+	return 0;
+}
+
+
+

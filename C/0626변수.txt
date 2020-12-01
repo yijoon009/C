@@ -1,0 +1,396 @@
+
+gets() -> .cpp->.c
+문자열 함수: strlen(), strcpy(), strcat(), strcmp()
+-------------------------------------------------------------------
+편의상 띄어쓰기를 _로 표기
+A_
+AA
+__ 
+이땐 단어추가 X
+
+_ 뒤에 문자일때만 추가
+
+
+#include<stdio.h>
+#include<string.h>
+int main() {
+
+	char str[50];
+	gets(str);	//
+	int word = 1;
+	for (int i = 0; i < strlen(str)-1; i++) {	//-1은 맨 마지막 글자 안들어가기 때문
+/*apple 
+
+
+[4][5]
+0 5
+0123
+str[i+1] 이거때문에 없는 인덱스5를 보면 오류가 생기기때문에 -1을 해준다.*/
+		if (str[i] == ' '&& str[i+1] !=' ') {
+			word++;
+		}
+	}
+	printf("%d", word);
+
+	return 0;
+}
+-------------------------------------------------------------
+띄어쓰기가 없는 문자열 1개 입력
+출력결과
+a: 1개
+e: 1개
+l: 1개
+p: 2개
+
+
+#include<stdio.h>
+#include<string.h>	//strlen 함수 쓸라고
+int main() {
+
+	char str[50];
+	scanf("%s", str);
+	int al[26] = { 0, };	//알파벳의 개수를 담을 배열 al
+							//al[0] -> 'a'의 개수 / al[1]->'b'의 개수...
+
+	for (int i = 0; i < strlen(str); i++) {
+		/*if (str[i] == 'a') {
+			al[0]++; 이걸 일반화한게 밑에거
+		}*/
+		al[str[i] - 97]++;	//일반화, 정규화
+	}
+	for (int i = 0; i < 26; i++) {
+		if (al[i] == 0) {
+			continue;
+		}
+		printf("%c : %d\n",i+97,al[i]);	//i=0 'a' 97 i=1 'b'98 i=25 'z' 122
+										//일반화, 정규화
+	}
+
+	return 0;
+}
+------------------------------------------------------------
+함수
+printf();
+scanf();
+strlen();이 아니라 main 정도의 함수
+
+main 밖에
+void hello() {	//void는 아무것도 없다. 나오는게 없다. 
+	printf("안녕하세요!\n");
+}
+
+----------------
+output(맨 앞에는 반환하는 값의 자료형) 함수명(input) {
+	기능;
+}
+----------------------------------------------------
+#include<stdio.h>
+
+void hello() {	//void는 아무것도 없다. 나오는게 없다. 
+	printf("안녕하세요!\n");
+}
+
+int main() {
+
+	hello();	//마치 printf();처럼
+
+	return 0;
+}
+-------------------------------------------------------
+#include<stdio.h>
+
+void hello() {	//void는 아무것도 없다. 나오는게 없다. 
+	printf("안녕하세요!\n");
+}
+
+int input() {	//맨 앞에는 반환하는 값의 자료형
+	int a;
+	scanf("%d", &a);
+	return a;	//main한테 다시 돌려줘야 sum가능해져.
+}
+
+int main() {
+
+	int a;
+	input();
+	int b;
+	scanf("%d", &b);
+	int sum = a + b;
+	printf("%d", sum);
+
+	return 0;
+}
+----------------------------------------------------
+#include<stdio.h>
+
+void hello() {	//void는 아무것도 없다. 나오는게 없다. 
+	printf("안녕하세요!\n");
+}
+
+int input() {	//맨 앞에는 반환하는 값의 자료형
+	int a;
+	scanf("%d", &a);
+	return a;	//main한테 다시 돌려줘야 sum가능해져.
+}
+
+int main() {
+
+	int a = input();	//a공간 생기기 전에 input먼저 수행(오른쪽을 왼쪽에 대입하는거라)
+	int b = input();
+	int sum = a + b;
+	printf("%d", sum);
+
+	return 0;
+}
+----------------------------------------------------------
+#include<stdio.h>
+
+void hello() {	//void는 아무것도 없다. 나오는게 없다. 
+	printf("안녕하세요!\n");
+}
+
+int input() {	//맨 앞에는 반환하는 값의 자료형
+	int a;
+	scanf("%d", &a);
+	return a;	//main한테 다시 돌려줘야 sum가능해져.
+}
+
+int add (int a, int b) {
+	int sum = a + b;
+	return sum;
+}
+
+int main() {
+
+	int a = input();	//a공간 생기기 전에 input먼저 수행(오른쪽을 왼쪽에 대입하는거라)
+	int b = input();
+	add(a, b);
+	printf("%d", add(a,b));
+
+	return 0;
+}
+----------------------------------------------------------------
+정수 하나 입력
+두배의 수 출력하는 bubble함수
+
+내가한거
+
+int bubble() {
+	int a;
+	scanf("%d", &a);
+	return a * 2;
+}
+int main() {
+
+	int a = bubble();
+	printf("%d", a);
+
+	return 0;
+}
+----------------------------------------------------------------------
+int doublee(int input) {
+	int res = input * 2;
+	return res;
+}
+int main() {
+
+	int a;
+	scanf("%d", &a);
+	printf("%d", doublee(a));
+
+	return 0;
+}
+------------------------------------------------------------------
+함수원형
+
+#include<stdio.h>
+
+int doublee(int input);	//컴파일러가 위에서부터 아래로 가는데 얘가 작성되어있지 않으면 모르고 뛰어넘는다.
+
+int main() {
+
+	int a;
+	scanf("%d", &a);
+	printf("%d", doublee(a));
+
+	return 0;
+}
+
+int doublee(int input) {
+	int res = input * 2;
+	return res;
+}
+----------------------------------------------------------------------
+input의 절대값을 반환하는 함수
+내가한거
+
+
+#include<stdio.h>
+
+int abs(int input);
+//input의 절대값을 반환하는 함수
+
+int main() {
+
+	int a;
+	scanf("%d", &a);
+	printf("%d", abs(a));
+
+	return 0;
+}
+
+int abs(int input) {
+	if (input < 0) {
+		input *= -1;
+	}
+	
+	return input;
+}
+--------------------------------------------------------------------
+저장공간==메모리
+스토리지클래스 storage class
+
+main 내부에 선언된/함수 내부에 선언된 int a; int b; 의 a,b는 지역변수(local)
+지역변수 : 해당함수가 죽을때(return) 같이 소멸
+생명주기(라이프 사이클, 생존기간)가 해당 함수와 동일
+
+main 밖에 선언된 int x; 의 x는 전역변수(global)
+프로그램이 끝날때(cmd기준) 같이 소멸됨.
+생명주기가 프로그램과 동일.
+
+---------------------------------------------------------------------
+#include<stdio.h>
+
+int x = 10;
+
+void func() {
+	int a=20;
+	printf("%d %d\n", a, x);
+}
+int main() {
+
+	int a=30;
+	printf("%d %d\n", a, x);
+	func();
+	return 0;
+}
+---------------------------------------------------------------------
+정적변수(static)
+정적 vs 동적(dinamic)
+정적: 프로그램 실행되기 전에 전부 결정되는 것들 
+동적: 프로그램이 실행된 이후에 어떤사항이 결정되는 것들 (web프로그래밍)
+
+#include <stdio.h>
+
+void f() {
+	static int a = 1;
+	//정적변수 -> 지역변수이나, 생존기간이 프로그램수준으로 상향됨.
+	//값이 유지되는것이 대표적인 특징!
+	int b = 1;
+	a++;
+	b++;
+	printf("%d %d\n", a, b);
+}
+int main() {
+	f();
+	f();
+	
+}
+-----------------------------------------------------------------
+함수 까지 복습 열심히
+---------------------------------------------------------------------
+정수1개입력함-> 2의 정수승을 보여주세요
+int pow(int x, int y);
+0입력되면 종료
+2 4
+3 8
+10 1024
+0 "종료되었습니다. pow()함수는 총 3번 호출되었습니다!"
+
+#include<stdio.h>
+int pow(int x, int y);
+int main() {
+
+	int n,res;
+	while (1) {
+		scanf("%d", &n);
+		res=pow(2, n);
+		if (res == -1) {
+			break;
+		}
+		printf("%d\n", res);
+	}
+
+	return 0;
+}
+int pow(int x, int y) {
+	static int cnt = 0;
+	if (y == 0) {
+		printf("종료되었습니다. pow()함수는 총 %d번 호출되었습니다!\n", cnt);
+		return -1;
+	}
+	cnt++;
+	int res=1;
+	for (int i = 0; i < y; i++) {
+		res*=x;
+	}
+	return res;
+}
+/*
+정수를 1개 입력함-> 2의 정수승을 보여주세요!
+0이되면 종료
+
+2 4
+3 8
+10 1024
+0 "종료되었습니다. pow()함수는 총 3번 호출되었습니다!"
+*/
+
+
+----------------------------------------------------------------------
+정수를 1개입력 3
+3번 반복 
+? 정수를 1개입력했을때, 그 정수가 소수(약수가 2개인 수)면 O, 아니면 X를 출력하는 행위
+
+int sosu(int n); //input: 소수인지 아닌지 판단할 수, output: n의 약수의 개수
+
+3
+
+10
+X
+2
+O
+3
+O
+
+#include<stdio.h>
+int sosu(int n);
+
+int main() {
+
+	int	num;
+	scanf("%d", &num);
+	int x;
+	for (int i = 0; i < num; i++) {
+		scanf("%d", &x);
+		if (sosu(x) == 2) {
+			printf("O\n");
+		}
+		else {
+			printf("X\n");
+		}
+	}
+
+	return 0;
+}
+
+int sosu(int n) {
+	int cnt = 0;
+	for (int i = 1; i <= n; i++) {
+		if (n%i == 0) {//i가 n의 약수이다
+			cnt++;
+		}
+	}
+	return cnt;
+}
+

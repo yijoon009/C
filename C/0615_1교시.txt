@@ -1,0 +1,145 @@
+#include<stdio.h>
+int main() {
+
+	/*
+	1. 문자 1개를 입력받아서 화면에 출력하기
+	2. 소문자->대문자 / 대문자->소문자 : 조건문(if)사용
+	
+	char ch;
+	scanf("%c", &ch);
+	// 65~90 / 97~122
+	if (65 <= ch && ch <= 90) { // 논리연산자 추가
+		ch += 32; // 대문자->소문자
+	}
+	else {
+		ch -= 32; // 소문자->대문자
+	}
+	printf("%c\n\n", ch);
+	*/
+
+	/*
+	1. 정수 3개 입력 : 10 11 101
+	2. 홀수는 2개, 짝수는 1개
+	*/
+	int x, y, z;
+	scanf("%d%d%d", &x,&y,&z);
+	int odd = 0;
+	int even = 0;
+	if (x % 2 == 1) {
+		odd++;
+	}
+	else {
+		even++;
+	}
+	if (y % 2 == 1) {
+		odd++;
+	}
+	else {
+		even++;
+	}
+	if (z % 2 == 1) {
+		odd++;
+	}
+	else {
+		even++;
+	}
+	printf("홀수는 %d개이고, 짝수는 %d개이다.\n\n", odd, even);
+	
+	return 0;
+}
+
++++++
+
+#include<stdio.h>
+// 제어문-조건문/반복문
+// 조건-if/switch
+int main() {
+
+	int x;
+	/*
+	scanf("%d", &x);
+	switch (x) { // 변수명
+	case 1:
+		printf("하나");
+		break;
+	case 2:
+		printf("둘");
+		break;
+	case 3:
+		printf("셋");
+		break;
+	default: // else
+		printf("해당없음");
+	}
+
+	if (x == 1) {
+		printf("하나");
+	}
+	else if (x == 2) {
+		printf("둘");
+	}
+	else if (x == 3) {
+		printf("셋");
+	}
+	else {
+		printf("해당없음");
+	}
+
+	printf("\n\n학생의 점수를 입력하세요: ");
+	scanf("%d", &x);
+	if (x >= 90) {
+		printf("A학점");
+	}
+	else if (x >= 80) {
+		printf("B학점");
+	}
+	else if (x >= 70) {
+		printf("C학점");
+	}
+	else {
+		printf("F학점");
+	}
+
+	switch (x/10) { // 99~90 -> 9
+	case 10:
+	case 9:
+		printf("A학점");
+		break;
+	case 8:
+		printf("B학점");
+		break;
+	case 7:
+		printf("C학점");
+		break;
+	default:
+		printf("F학점");
+	}
+	*/
+
+	printf("\n\n월을 입력하세요: ");
+	scanf("%d", &x);
+	// 3~5 봄 6~8 여름 9~11 가을 12,1,2 겨울
+	// switch사용
+	switch (x)
+	{
+	case 3:
+	case 4:
+	case 5:
+		printf("봄");
+		break;
+	case 6:
+	case 7:
+	case 8:
+		printf("여름");
+		break;
+	case 9:
+	case 10:
+	case 11:
+		printf("가을");
+		break;
+	default:
+		printf("겨울");
+	}
+
+	return 0;
+}

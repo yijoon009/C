@@ -1,0 +1,137 @@
+#include<stdio.h>
+int main() {
+
+	// while -> 무한루프
+	int i = 1;
+	while (1) {
+		printf("%d ", i);
+		i++;
+		if (i == 100) {
+			break;
+			// 반복문 안에서의 break는,
+			// 자신과 가장가까운 [반복문]바깥으로 나감
+		}
+	}
+
+	int x;
+	while (1) {
+		scanf("%d", &x);
+		if (x == 0) {
+			break;
+		}
+		else if (x % 2 == 0) {
+			continue;
+		}
+		printf("%d\n", x);
+	}
+
+	return 0;
+}
+
++++++
+
+#include<stdio.h>
+int main() {
+
+	/*
+	1. 정수 1개 입력 : 4
+	2. 1 2 3 출력
+
+	1. 정수 1개 입력 : 10
+	2. 짝수들의 합 : 30
+
+	1. 정수 1개 입력 : 28
+	2. 3의 배수의 개수 : 9개
+	*/
+	int a;
+	scanf("%d", &a);
+	int i = 1;
+	while (i < a) {
+		printf("%d ", i);
+		i++;
+	}
+	printf("\n");
+
+	int b;
+	scanf("%d", &b);
+	i = 1;
+	int sum = 0;
+	while (i <= b) {
+		i++;
+		/*
+		if (i % 2 == 0) {
+			sum += i;
+		}
+		*/
+		if (i % 2 == 1) {
+			continue;
+		}
+		sum += i;
+	}
+	printf("짝수들의 합은 %d이다.\n", sum);
+
+	int c;
+	scanf("%d", &c);
+	i = 1;
+	int cnt = 0;
+	while (i <= c) {
+		if (i % 3 == 0) {
+			cnt++;
+		}
+		i++;
+	}
+	printf("3의배수의 개수는 %d개입니다.\n", cnt);
+
+	return 0;
+}
+
+++++++++++
+
+#include<stdio.h>
+int main() {
+
+	// 약수 소수(약수가 2개인수) 완전수(6=1,2,3)
+	int num;
+	scanf("%d", &num);
+	int i = 1;
+	while (i <= num) {
+		if (num % i == 0) { // i가 num의 약수이다.
+			printf("%d ", i);
+		}
+		i++;
+	}
+	printf("\n----------\n");
+	scanf("%d", &num);
+	i = 1;
+	int cnt = 0;
+	while (i <= num) {
+		if (num % i == 0) { // i가 num의 약수이다.
+			cnt++;
+		}
+		i++;
+	}
+	if (cnt == 2) { // 약수의 개수가 2라면, 소수이다.
+		printf("소수");
+	}
+	else {
+		printf("소수X");
+	}
+	printf("\n----------\n");
+	scanf("%d", &num);
+	i = 1;
+	int sum = 0;
+	while (i < num) {
+		if (num%i == 0) {
+			sum += i;
+		}
+		i++;
+	}
+	if (num == sum) {
+		printf("완전수");
+	}
+	else {
+		printf("완전수X");
+	}
+
+	return 0;
+}

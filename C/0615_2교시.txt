@@ -1,0 +1,129 @@
+#include<stdio.h>
+int main() {
+
+	// 계산기 프로그램
+	int a, b;
+	char op;
+	scanf("%d %c%d", &a, &op, &b);
+	
+	if (op == '+') {
+		printf("%d", a + b);
+	}
+	else if (op == '-') {
+		printf("%d", a - b);
+	}
+	else if (op == '*') {
+		printf("%d", a * b);
+	}
+	else if (op == '/') {
+		printf("%d", a / b);
+	}
+	else {
+		printf("%d", a % b);
+	}
+	/*
+	switch (op) {
+	case '+':
+
+	}
+	*/
+
+	return 0;
+}
+
++++++
+
+#include<stdio.h>
+int main() {
+
+	// 비트연산자를 이용한 홀짝 판별
+	/*
+	int n;
+	scanf("%d", &n);
+	if (n & 1) {
+		printf("홀수");
+	}
+	else {
+		printf("짝수");
+	}
+	*/
+
+	/*
+	if( F && ? )
+	if( T || ? )
+	*/
+	int a;
+	scanf("%d", &a);
+	if (++a == 2 && ++a == 3) {
+		printf("1번\n"); // O
+	}
+	printf("3 %d\n", a);
+	if (++a == 2 && ++a == 3) {
+		printf("2번\n");
+	}
+	printf("4 %d\n", a);
+	if (++a == 2 && ++a == 5) {
+		printf("3번\n");
+	}
+	printf("5 %d\n", a);
+	if (++a == 6 || ++a == 7) {
+		printf("4번\n"); // O
+	}
+	printf("6 %d\n", a);
+	if (++a == 7 || ++a == 2) {
+		printf("5번\n"); // O
+	}
+	printf("7 %d\n", a);
+	if (++a == 2 || ++a == 9) {
+		printf("6번\n"); // O
+	}
+	printf("9 %d\n", a);
+
+	return 0;
+}
+
+******************************
+
+#include<stdio.h>
+int main() {
+
+	/*
+	// 제어문-반복문
+	int i = 0;
+	while (i < 3) {
+		printf("안녕하세요!\n");
+		i++;
+	}
+
+	char c = 'a';
+	while (c <= 'z') {
+		printf("%c ", c);
+		c++;
+	}
+
+	i = 1;
+	int sum = 0;
+	while (i <= 10) {
+		sum += i;
+		i++;
+	}
+	printf("\n1부터 10까지의 합은 %d이다.\n", sum);
+
+	// 제어문끼리는 [중첩]이 가능하다!
+	1. 정수 1개 입력 : 5
+	2. 1부터 5까지의 홀수합 : 9
+	*/
+	int num;
+	scanf("%d", &num);
+	int i = 1;
+	int odd = 0;
+	while (i <= num) {
+		if (i % 2 == 1) {
+			odd += i;
+		}
+		i++;
+	}
+	printf("%d", odd);
+
+	return 0;
+}

@@ -1,0 +1,37 @@
+/*
+20 3
+3 30 -> 50
+1 40
+2 10
+-----
+50 (20 xxx)
+*/
+#include<stdio.h>
+int main() {
+
+	int h, t;
+	scanf("%d%d", &h, &t);
+	int act, x;
+	int max = h;
+	for (int i = 0; i < t; i++) {
+		scanf("%d%d", &act, &x);
+		if(act==1){
+			h -= x;
+		}
+		else if (act == 2) {
+			h += x;
+			if (max < h) {
+				max = h;
+			}
+		}
+		else {
+			h += x;
+			if (max < h) {
+				max = h;
+			}
+		}
+	}
+	printf("%d", max);
+
+	return 0;
+}

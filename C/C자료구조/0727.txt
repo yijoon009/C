@@ -1,0 +1,474 @@
+pop 삭제동반
+peek 그냥 보고 끝
+
+
+index -1로 시작
+
+
+#include <stdio.h>
+#define MAX 5
+int stack[MAX];
+int index = -1;	//아직 데이터 넣지 않았다는 의미
+int isFull() {
+	if (index == MAX - 1) {	//스택이 가득차있을때 1을 리턴
+		return 1;
+	}
+	return 0;
+}
+int isEmpty() {
+	if (index < 0) {
+		return 1;
+	}
+	return 0;
+}
+void push(int data) {
+
+	index++;
+	stack[index] = data;	//stack[++index] = data;
+
+}
+int pop() {
+	return stack[index--];	//stack[index] 출력하고 그 뒤에 index-- 해야해. 후위증감연산자 맞다.
+	
+}
+int peek() {
+	return stack[index];
+}
+int size() {
+	return index + 1;
+}
+int main() {
+
+	int act;
+	while (1) {
+		printf("1.push() 2.pop() 3.peek() 4.size() 5.종료\n");
+		printf("번호입력: ");
+		scanf("%d", &act);
+		if (act == 1) {
+			if (isFull()) {
+				printf("가득 차서 입력불가!\n");
+				continue;
+			}
+			//데이터를 스택에 입력하는 액션
+			printf("데이터입력: ");
+			int data;
+			scanf("%d", &data);
+			push(data);
+		}
+		else if (act == 2) {
+			if (isEmpty()) {
+				printf("텅 비어서 출력불가!\n");
+				continue;
+			}
+			printf("pop() 수행 %d\n", pop());
+		}
+		else if (act == 3) {
+			if (isEmpty()) {
+				printf("텅 비어서 출력불가!\n");
+				continue;
+			}
+			printf("peek() 수행 %d\n", peek());
+		}
+		else if (act == 4) {
+			//스택에 들어있는 데이터의 개수출력
+			//수위, LEVEL, 높이 ...
+			printf("데이터의 개수는 %d개입니다.\n", size());
+		}
+		else {
+			printf("프로그램 종료\n");
+			break;
+		}
+	}
+
+
+
+
+	return 0;
+}
+
+
++++++
+
+
+index 0 으로 시작
+
+#include <stdio.h>
+#define MAX 5
+int stack[MAX];
+int index = 0;
+int isFull() {
+	if (index == MAX) {
+		return 1;
+	}
+	return 0;
+}
+int isEmpty() {
+	if (index == 0) {
+		return 1;
+	}
+	return 0;
+}
+void push(int data) {
+	stack[index] = data;
+	index++;
+}
+int pop() {
+	return stack[--index];
+}
+int peek() {
+	return stack[index - 1];	//인덱스값 자체에는 아무런 영향X
+}
+int size() {
+	return index;
+}
+int main() {
+
+	int act;
+	while (1) {
+		printf("1.push() 2.pop() 3.peek() 4.size() 5.종료\n");
+		printf("번호입력: ");
+		scanf("%d", &act);
+		if (act == 1) {
+			if (isFull()) {
+				printf("꽉 차서 입력불가!\n");
+				continue;
+			}
+			int data;
+			scanf("%d", &data);
+			push(data);
+		}
+		else if (act == 2) {
+			if (isEmpty()) {
+				printf("텅 비어서 출력불가!\n");
+				continue;
+			}
+			printf("pop() 수행 %d\n", pop());
+
+		}
+
+		else if (act == 3) {
+			if (isEmpty()) {
+				printf("텅 비어서 출력불가!\n");
+				continue;
+			}
+			printf("peek() 수행 %d\n", peek());
+		}
+		else if (act == 4) {
+			printf("데이터의 개수는 %d개입니다.\n", size());
+		}
+		else {
+			printf("프로그램 종료\n");
+			break;
+		}
+	}
+
+
+
+
+	return 0;
+} 
+
+
++++++
+
+
+전역변수 없애고 동적할당으로
+
+#include <stdio.h>
+#include <stdlib.h>
+/*int isFull(int index, int num) {
+	if (index == num) {
+		return 1;
+	}
+	return 0;
+}*/
+
+void push(int data,int *stack,int index) {
+	stack[index] = data;
+}
+
+int main() {
+
+	printf("스택의 크기를 입력하세요: ");
+	int num;
+	scanf("%d", &num);
+	int *stack = (int *)malloc(num * sizeof(int));
+	int index = 0;
+
+	int act;
+	while (1) {
+		printf("1.push() 2.pop 3.peek 4.size 5.종료\n");
+		printf("번호입력: ");
+		scanf("%d", &act);
+
+		if (act == 1) {
+			if (index==num) {
+				printf("꽉 차서 입력불가!\n");
+				continue;
+			}
+			int data;
+			scanf("%d", &data);
+			push(data,stack,index);
+			index++;
+		}
+		else if (act == 2) {
+			if (index==0) {
+				printf("텅 비어서 출력불가!\n");
+				continue;
+			}
+			printf("pop 수행 %d\n", stack[--index]);	//삭제동반
+
+		}
+
+		else if (act == 3) {
+			if (index==0) {
+				printf("텅 비어서 출력불가!\n");
+				continue;
+			}
+			printf("peek 수행 %d\n", stack[index-1]);	//출력만
+		}
+		else if (act == 4) {
+			printf("데이터의 개수는 %d개입니다.\n", index);
+		}
+		else {
+			printf("프로그램 종료\n");
+			break;
+		}
+	}
+
+
+
+
+	return 0;
+}
+
+
++++++
+
+
+1.push() 2.pop 3.peek 4.size 5.종료 이런 번호입력 없이
+바로 명령 가능하게
+
+#define MAX 5
+#전역변수 stack[MAX];
+#int index= -1;
+
+-----(cmd창)
+push 5
+push 10
+push 15
+push 20
+push 25
+push 30
+[가득차서 push 불가!] <-> [텅 비어서 pop 불가! / peek 불가!]
+pop
+[25]
+pop
+[20]
+peek
+[15]
+pop
+[15]
+size
+[level: 2]
+
+-----
+
+1. 문자열 입력
+2. if(strcmp(str,"push")==0) -> push() 진행
+3. exit
+
+#include<stdio.h>
+#include<string.h>
+#define MAX 5
+int stack[MAX];
+int index = -1;
+int isFull() {
+	if (index == MAX - 1) {
+		return 1;
+	}
+	return 0;
+}
+int isEmpty() {
+	if (index < 0) {
+		return 1;
+	}
+	return 0;
+}
+void push(int data) {
+	stack[++index] = data;
+}
+int pop() {
+	return stack[index--];
+}
+int peek() {
+	return stack[index];
+}
+int size() {
+	return index + 1;
+}
+int main() {
+
+	char act[10];
+	while (1) {
+		scanf("%s", act);
+		if (strcmp(act,"push")==0) {
+			int data;
+			scanf("%d", &data);
+			if (isFull()) {
+				printf("[가득차서 push불가!]\n");
+				continue;
+			}
+			push(data);
+		}
+		else if (strcmp(act, "pop") == 0) {
+			if (isEmpty()) {
+				printf("[텅비어서 pop불가!]\n");
+				continue;
+			}
+			printf("[%d]\n", pop());
+		}
+		else if (strcmp(act, "peek") == 0) {
+			if (isEmpty()) {
+				printf("[텅비어서 peek불가!]\n");
+				continue;
+			}
+			printf("[%d]\n", peek());
+		}
+		else if (strcmp(act, "size") == 0) {
+			printf("level: %d\n", size());
+		}
+		else {
+			printf("\nBye...\n\n");
+			break;
+		}
+	}
+
+	return 0;
+}
+
+
++++++
+
+
+[Q] 
+정수 1개 입력: 10 (int 배열 생겨)
+2 3 -2 0(방금 입력한 -2 잘못입력했어->삭제되는 효과) 10 0(10삭제) 0(3 삭제) 4 5 0(5 삭제)
+결과적으로 [2 4] 남음 -> 남아있는 요소들의 합이 6이다
+6 출력
+
+1-배열
+2-리스트
+3-스택
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+
+int main() {
+
+	int num;
+	scanf("%d", &num);
+	int *stack = (int *)malloc(num * sizeof(int));
+	int index = 0;
+
+	for (int i = 0;i < num;i++) {
+		int data;
+		scanf("%d", &data);
+		if (data != 0) {	//if(data) / ()안이 0 아니면 참으로 간주
+			//push
+			stack[index++] = data;
+		}
+		else {
+			//pop
+			index--;
+		}
+	}
+	int sum = 0;
+	for (int i = 0;i < index;i++) {
+		printf("%d ", stack[i]);
+		sum += stack[i];
+	}
+	printf("\n총 합은 %d\n", sum);
+
+
+
+	return 0;
+}
+
+
++++++
+
+
+문자열 하나 입력
+올바른 문자열인지/아닌지 o/x 출력
+
+()()	<-올바른 문자열
+(())	<-올바름
+(()())	<-올바름
+
+))((	<-올바르지 않은 문자열
+(()()()	<-올바르지 않음
+
+
+( -1
+) +1
+로 계산
+총 합계가 한번이라도 0보다 작아지면 x출력
+
+
+
+
+-----강사님
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+
+int main() {
+
+	char str[10];
+	scanf("%s", str);
+	int index = strlen(str)-1;	//가장 마지막인덱스에 둘거야
+	int sum = 0;
+	while (index != -1) {	//디버깅표 그렸어야 -1인거 알아채
+		//맨처음에 index=strlen(str)로 했으면 여기서 index--했어야해
+		if (str[index] == ')') {
+			sum++;
+		}
+		else {
+			sum--;
+		}
+		if (sum < 0) {
+			break;
+		}
+		index--;
+	}
+	
+	
+	if (sum) {
+		printf("X\n");
+	}
+	else {
+		printf("O\n");
+	}
+
+
+	return 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+

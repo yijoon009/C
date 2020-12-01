@@ -1,0 +1,633 @@
+1 1 0
+-----
+2 1
+
+1 2 1 1 0
+-----
+1 1 1 2 2 1
+
+10개초과입력x
+10개까지만 입력함!!!
+
+#include<stdio.h>
+#include<stdlib.h>
+
+int main() {
+
+	// 최대가 아무숫자가 겹치지 않을때 최대 배열에 18개 들어가
+	int arr[18];
+	int i = 0;
+	while (1) {
+		scanf("%d", &arr[i]);
+		if (arr[i] == 0) {
+			break;
+		}
+		i++;	//다음칸 대비
+	}
+	printf("현재까지 데이터의 개수 %d개\n", i);
+	//i와 i+1 or i와 i-1 (후자선택)
+	int cnt=1;		//if로 안들어가고 else 로 들어가면 나오는게 1이여야해.
+	for (int a = 1; a <= i; a++) {
+		if (arr[a - 1] == arr[a]) {
+			cnt++;
+		}
+		else {
+			printf("%d %d ", cnt, arr[a - 1]);
+		}
+	}
+
+	printf("\n\n");
+	int x;	//현재입력에 대한 변수
+	int xx;	//이전입력에 대한 변수
+	//이전과 이후의 입력을 체크해서 배열에 결과를 저장 ->출력
+	int data[18];
+	int index = 0;
+	int count = 1;
+	scanf("%d", &xx);
+	while (xx != 0) {
+		scanf("%d", &x);
+		if (xx == x) {
+			count++;
+		} 
+		else {
+			data[index] = count;	//data[index++]=count;도 가능 41번줄 빼고
+			index++;
+			data[index] = xx;
+			count = 1;
+		}
+		xx = x;	//현재입력값을 이전값으로 변경
+	}
+	for (int i = 0; i < index; i++) {
+		printf("%d ", data[i]);
+	}
+
+
+	return 0;
+
+}
+
+-----강사님
+
+#include<stdio.h>
+int main() {
+
+
+	int arr[18];
+	int i = 0;
+	while (1) {
+		scanf("%d", &arr[i]);
+		if (arr[i] == 0) {
+			break;
+		}
+		i++;
+	}
+	printf("현재까지 데이터의 개수 %d개\n", i);
+	int cnt = 1;
+	for (int a = 1; a <= i; a++) {
+		if (arr[a - 1] == arr[a]) {
+			cnt++;
+		}
+		else {
+			printf("%d %d ", cnt, arr[a - 1]);
+			cnt = 1;
+		}
+	}
+
+	printf("\n\n");
+
+	int x; // 현재입력에 대한 변수
+	int xx; // 이전입력에 대한 변수
+			// 이전이후입력 체크하여 배열에 결과를 저장->출력
+	int data[18];
+	int index = 0;
+	int count = 1;
+	scanf("%d", &xx);
+	while (xx != 0) {
+		scanf("%d", &x);
+		if (xx == x) {
+			count++;
+		}
+		else {
+			data[index++] = count;
+			data[index++] = xx;
+			count = 1;
+		}
+		xx = x;
+	}
+	for (int i = 0; i < index; i++) {
+		printf("%d ", data[i]);
+	}
+
+	return 0;
+}
+
+
++++++
+
+
+#include<stdio.h>
+#include<stdlib.h>
+//쓰레기값 안나오게하기 위해선 기호상수
+#define MAX 5
+int main() {
+
+	int arr[5] = { 1,2,3,4,5 };
+	int *p = &arr[0];	//&arr[0]==arr
+	for (int i = 0; i < 5; i++) {
+		printf("%u ", &arr[i]);
+	}
+	printf("\n");
+
+	printf("%u ", p+1);
+	//포인터의 연산은 [값]을 추가하는것이 아니라, [주소]를 이동시키는 연산이다!
+	//포인터는 면이 아니라 선이다. 
+	
+	p = &arr[2];	//뒤에 쓰레기값 나온다
+	for (int i = 0; i < MAX-2; i++) {
+		printf("%d ", *(p + i));	//연산자 우선순위 주의!! 더하기가 *보다 낮아서 괄호필요해
+	}
+	return 0;
+
+}
+
+
++++++
+
+
+정수1개 입력, 3
+배열 동적 할당-> 1 2 3
+[1 2 3]
+f() : 인자로 배열을 사용할 예정(포인터이용하기!)
+출력시 : 3 2 1 (거꾸로) *(p+i) 사용
+
+#include<stdio.h>
+#include<stdlib.h>
+void f(int *p, int n) {
+	for (int i = n-1; i >=0; i--) {
+		printf("%d ", *(p + i));
+	}
+
+}
+
+int main() {
+
+	int n;
+	scanf("%d", &n);
+	int *arr = (int *)malloc(n * sizeof(int));
+	for (int i = 0; i < n; i++) {
+		scanf("%d", &arr[i]);
+	}
+	int *p = &arr[0];
+	f(p, n);
+
+	return 0;
+
+}
+
+
+-----
+
+
+#include<stdio.h>
+#include<stdlib.h>
+void f(int *arr, int n) {
+	int *p = &arr[0];
+	for (int i = n-1; i >=0; i--) {
+		printf("%d ", *(p + i));
+	}
+
+}
+
+int main() {
+
+	int n;
+	scanf("%d", &n);
+	int *arr = (int *)malloc(n * sizeof(int));
+	for (int i = 0; i < n; i++) {
+		scanf("%d", &arr[i]);
+	}
+	f(arr, n);
+
+	return 0;
+
+}
+
+
+-----강사님
+
+#include<stdio.h>
+#include<stdlib.h>
+void f(int *arr, int len) {
+	
+	for (int i = len-1; i >=0; i--) {
+		//[ p _ _ _ _]
+		printf("%d ", *(arr + i));
+	}
+	printf("\n");
+
+}
+void f2(int *arr, int len) {
+
+	for (int i = 0; i < len;i++) {
+		//[ _ _ _ _ p]
+		printf("%d ", *(arr - i));
+	}
+	printf("\n");
+
+}
+
+int main() {
+
+	int n;
+	scanf("%d", &n);
+	int *arr = (int *)malloc(n * sizeof(int));
+	for (int i = 0; i < n; i++) {
+		scanf("%d", &arr[i]);
+	}
+	f(&arr[0], n);	//arr==&arr[0]이기 때문에 사용가능, 앞부터 출력
+	f2(&arr[n-1], n);	// 끝을 보내서 뒤부터 출력
+	return 0;
+
+}
+
+
++++++
+
+
+구조체
+ 타입이 달라도 묶어서 쓰고싶을때
+
+
+#include<stdio.h>
+#include <string.h>
+struct student {
+	char name[10];	//멤버변수,속성, 필드
+	int score;
+	double avg;
+};	//붕어빵틀(main에서 안부르면 적재되지 않은상태)
+
+int main() {
+
+	struct student s1 = { "홍길동",70,72.4 };
+	struct student s2;
+	s2.score = 71;
+	//s2.avg = 74.5;
+	// 지양 s2.name = "임꺽정";
+	strcpy(s2.name, "임꺽정");
+	scanf("%lf", &s2.avg);
+
+
+	return 0;
+
+}
+
+
++++++
+
+struct point {	//구조체 점: (x,y)
+	int x;
+	int y;
+};
+
+p1의 x,y좌표와 p2 x,y좌표 입력
+->중점을 p3에 저장해서 출력
+
+
+#include<stdio.h>
+#include <string.h>
+
+struct point {	//구조체 점: (x,y)
+	int x;
+	int y;
+};
+int main() {
+
+	struct point p1;
+	struct point p2;
+	printf("p1의 좌표입력(x,y): ");
+	scanf("%d%d", &p1.x, &p1.y);
+	printf("p2의 좌표입력(x,y): ");
+	scanf("%d%d",&p2.x, &p2.y);
+	
+	struct point p3;
+	p3.x = (p1.x + p2.x) / 2;
+	p3.y = (p1.y + p2.y) / 2;
+	printf("중점좌표는 (%d, %d)입니다. \n", p3.x, p3.y);
+
+
+
+
+
+
+	return 0;
+
+}
+
+
++++++
+
+
+typedef
+ 구독성 증가
+ 이식성 증가
+
+
+#include<stdio.h>
+#include <string.h>
+
+typedef struct point {	//구조체 점: (x,y) , typedef는 뒤에 나오는걸 하나의 자료형으로 만들것이다
+	int x;
+	int y;
+}P;	//struct point 구조체 점을 P라는 자료형으로 바꾼것
+int main() {
+
+	P p1;
+	P p2;
+	//마치 int a;
+	printf("p1의 좌표입력(x,y): ");
+	scanf("%d%d", &p1.x, &p1.y);
+	printf("p2의 좌표입력(x,y): ");
+	scanf("%d%d",&p2.x, &p2.y);
+	
+	struct point p3;
+	p3.x = (p1.x + p2.x) / 2;
+	p3.y = (p1.y + p2.y) / 2;
+	printf("중점좌표는 (%d, %d)입니다. \n", p3.x, p3.y);
+
+	//struct point라고 불리는 자료형을 만들것이다
+
+
+
+
+	return 0;
+
+}
+
+
++++++
+
+
+배열로 풀어보자
+#include<stdio.h>
+#include <string.h>
+
+typedef struct point {	
+	int x;
+	int y;
+}P;
+int main() {
+
+	
+
+	//int x[3]; 처럼
+
+	P p[3];	//구조체 배열
+	for (int i = 0; i < 2; i++) {
+		printf("p[%d]의 좌표입력(x,y): ", i);
+		scanf("%d%d", &p[i].x, &p[i].y);
+	}
+	p[2].x = (p[0].x + p[1].x) / 2;
+	p[2].y = (p[0].y + p[1].y) / 2;
+	printf("%d %d\n", p[2].x, p[2].y);
+
+
+
+	return 0;
+
+}
+
+
++++++
+
+
+3명의 학생 => 배열[]
+학생 구조체는 이름, 성적(int), 학생번호(int)
+3명의 학생정보를 입력
+가장 성적이 높은학생의 이름출력하기
+
+#include<stdio.h>
+#include <string.h>
+
+typedef struct student {
+	char name[10];
+	int score;
+	int number;
+}S;
+int main() {
+
+	S s[3];
+	for (int i = 0; i < 3; i++) {
+		scanf("%s%d%d", s[i].name, &s[i].score, &s[i].number);
+	}
+	/*
+	학생번호를 임의로
+	for(int i=0;i<3;i++){
+	s[i].number=i+1;
+	}
+	도 가능
+	*/
+	int high = s[0].score;
+	for (int i = 0; i < 3; i++) {
+		if (high < s[i].score) {
+			high = s[i].score;
+		}
+	}
+	for (int i = 0; i < 3; i++) {
+		if (high == s[i].score) {
+			printf("%s", s[i].name);
+		}
+	}
+	
+
+
+
+	return 0;
+
+}
+
+
+-----강사님
+
+
+	int high = s[0].score;
+	int highI = 0;
+	for (int i = 0; i < 3; i++) {
+		if (high < s[i].score) {
+			high = s[i].score;
+			highI = i;
+		}
+	}
+	printf("성적이 높은 학생은 %s입니다.\n", s[highI].name);
+
+
++++++
+
+
+동적할당적용!!
+
+#include<stdio.h>
+#include <string.h>
+#include <stdlib.h>
+typedef struct student {
+	char name[10];
+	int score;
+	int number;
+}S;
+int main() {
+
+	int N;
+	scanf("%d", &N);
+	S *s = (S *)malloc(N * sizeof(S));
+
+	for (int i = 0; i < N; i++) {
+		scanf("%s%d%d", s[i].name, &s[i].score, &s[i].number);
+	}
+	/*
+	학생번호를 임의로
+	for(int i=0;i<3;i++){
+	s[i].number=i+1;
+	}
+	도 가능
+	*/
+	int high = s[0].score;
+	int highI = 0;
+	for (int i = 0; i < N; i++) {
+		if (high < s[i].score) {
+			high = s[i].score;
+			highI = i;
+		}
+	}
+	printf("성적이 높은 학생은 %s입니다.\n", s[highI].name);
+	
+
+
+
+	return 0;
+
+}
+
+
++++++
+
+
+정수1개 입력받고 (탑의 개수)
+탑: int 금액, int 높이
+금액*높이=탑을 만들때 사용되는 총 금액
+전체 탑을 만드는데 드는 비용 구하기(최종비용 출력)
+
+#include<stdio.h>
+#include <string.h>
+#include <stdlib.h>
+typedef struct top {
+	int cost;
+	int height;
+}T;
+int main() {
+
+	int n;
+	scanf("%d", &n);
+	T *t = (T *)malloc(n * sizeof(T));
+	for (int i = 0; i < n; i++) {
+		scanf("%d%d", &t[i].cost, &t[i].height);
+	}
+	int totalcost = 0;
+	for (int i = 0; i < n; i++) {
+		totalcost += t[i].cost*t[i].height;
+	}
+	printf("총 비용은 %d입니다.\n", totalcost);
+
+
+
+	return 0;
+
+}
+
+
+-----강사님(함수이용)
+
+#include<stdio.h>
+#include <stdlib.h>
+typedef struct top {
+	int cost;
+	int height;
+}T;
+int f(T *t,int i) {
+	return t[i].cost*t[i].height;
+}
+int main() {
+
+	int n;
+	scanf("%d", &n);
+	T *t = (T *)malloc(n * sizeof(T));
+	for (int i = 0; i < n; i++) {
+		scanf("%d%d", &t[i].cost, &t[i].height);
+	}
+	int sum = 0;
+	for (int i = 0; i < n; i++) {
+		sum += f(t, i);
+	}
+	printf("총 비용은 %d입니다.\n", sum);
+
+
+
+	return 0;
+
+}
+
+
++++++
+
+
+정수1개입력받고
+그 정수만큼 학생구조체 배열
+int score1, int score2 전부 멤버로 존재 
+show()함수로 학생의 평균점수를 %.2lf로 출력
+
+#include<stdio.h>
+#include <stdlib.h>
+typedef struct student {
+	int s1;
+	int s2;
+}S;
+void show(S *s,int n) {
+	for (int i = 0; i < n; i++) {
+		double avg = (s[i].s1 + s[i].s2) / 2.0;
+		printf("%d번째 학생의 평균은 %.2lf점이다.\n", i + 1, avg);
+	}
+
+
+}
+int main() {
+
+	int n;
+	scanf("%d", &n);
+	S *s = (S *)malloc(n * sizeof(S));
+	for (int i = 0; i < n; i++) {
+		scanf("%d%d", &s[i].s1,&s[i].s2);
+	}
+	show(s,n);
+	//show(s,n)에서 s는 배열 첫번째주소(&s[0])를 보낸것이기 때문에 
+	//show(S *s,int n)여기서 주소값을 받았기 때문에 *를 붙인것이다.
+
+
+	return 0;
+
+}
+
+
+//show(s,n)에서 s는 배열 첫번째주소(&s[0])를 보낸것이기 때문에 
+//show(S *s,int n)여기서 주소값을 받았기 때문에 *를 붙인것이다.
+
+-----강사님(함수에서 n대신 i이용)
+
+
+
+
+
+
+
+
+
+
+
+

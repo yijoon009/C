@@ -1,0 +1,421 @@
+3번 show함수
+
+void show(N *root) {
+	printf("show(): ");
+	N *p = root->next;
+	while (p != NULL) {
+		printf("%d ", p->data);
+		p = p->next;
+		if (p != NULL) {
+			printf("-> ");
+		}
+	}
+	printf("\n");
+}
+
+
++++++
+
+
+add함수에서 중복값 삽입 못하게
+
+1입력 2입력 1입력 불가
+
+
+void add(N *root,int data) {
+	N *node = (N*)malloc(sizeof(N));
+	node->data = data;
+	node->next = NULL;
+
+	N *p = root;
+	while (p->next != NULL) {	//이미 연결된거 있는상황
+		if (p->next->data == data) {
+			printf("%d는 이미 존재합니다.\n", data);
+			return;
+		}
+		p = p->next;	//연결 된거에 또 추가하기위해서 next로 보내
+	}
+	p->next = node;	//뒤에가 null이면 방금 생성한거를 next로 연결해주는것
+	
+}
+
+
++++++
+
+
+add함수 오름차순입력
+
+
+void add(N *root,int data) {
+	N *node = (N*)malloc(sizeof(N));
+	node->data = data;
+	node->next = NULL;
+
+	N *p = root;
+	while (p->next != NULL) {	//이미 연결된거 있는상황
+		if (p->next->data == data) {
+			printf("%d는 이미 존재합니다.\n", data);
+			return;
+		}
+		else if (p->next->data > data) {
+			node->next = p->next;
+			break;
+		}
+		p = p->next;	//연결 된거에 또 추가하기위해서 next로 보내
+	}
+	p->next = node;	//뒤에가 null이면 방금 생성한거를 next로 연결해주는것
+	
+}
+
+
++++++
+
+삭제 (+입력한 데이터 없음)
+
+void remove(N *root, int data) {
+	N *p = root;
+	while (p->next != NULL) {
+		if (data == p->next->data) {
+			p->next = p->next->next;
+			return;
+		}
+		p = p->next;
+	}
+	printf("%d는 존재하지 않는 데이터입니다.\n",data);
+}
+
+
++++++
+
+
+완성본
+
+#include <stdio.h>
+#include <stdlib.h>
+typedef struct NODE {
+	int data;
+	struct NODE* next;
+}N;
+void add(N *root,int data) {
+	N *node = (N*)malloc(sizeof(N));
+	node->data = data;
+	node->next = NULL;
+
+	N *p = root;
+	while (p->next != NULL) {	//이미 연결된거 있는상황
+		if (p->next->data == data) {
+			printf("%d는 이미 존재합니다.\n", data);
+			return;
+		}
+		else if (p->next->data > data) {	//오름차순
+			node->next = p->next;
+			break;
+		}
+		p = p->next;	//연결 된거에 또 추가하기위해서 next로 보내
+	}
+	p->next = node;	//뒤에가 null이면 방금 생성한거를 next로 연결해주는것
+	
+}
+void show(N *root) {
+	printf("show(): ");
+	N *p = root->next;
+	while (p != NULL) {
+		printf("%d ", p->data);
+		p = p->next;
+		if (p != NULL) {
+			printf("-> ");
+		}
+	}
+	printf("\n");
+}
+void remove(N *root, int data) {
+	N *p = root;
+	while (p->next != NULL) {
+		if (data == p->next->data) {
+			p->next = p->next->next;
+			return;
+		}
+		p = p->next;
+	}
+	printf("%d는 존재하지 않는 데이터입니다.\n",data);
+}
+int main() {
+
+	N *head = (N*)malloc(sizeof(N));
+	head->next = NULL;
+	int act;
+	while (1) {
+		printf("1.삽입 2.삭제 3.출력 4.종료\n");
+		printf("번호입력: ");
+		scanf("%d", &act);
+		if (act == 1) {
+			int data;
+			printf("데이터 입력: ");
+			scanf("%d", &data);
+			add(head,data);
+		}
+		else if (act == 2) {
+			printf("삭제할 데이터 입력: ");
+			int data;
+			scanf("%d", &data);
+			remove(head, data);
+		}
+		else if (act == 3) {
+			show(head);
+		}
+		else  {
+			printf("프로그램 종료\n");
+			break;
+		}
+	}
+
+
+	return 0;
+}
+
+
++++++
+
+
+팽이팽이달팽이문제(+첨부파일
+
+총 데이터 개수 입력
+10 [노드개수]
+앞에서부터 몇번째
+3 [사이클]
+
+이후에 들어갈 데이터 입력
+13 2 5 11 7 8 2 4 9 10
+
+show 함수에 의해 무한루프 출력되면 성공!
+
+#include <stdio.h>
+#include <stdlib.h>
+typedef struct NODE {
+	int data;
+	struct NODE* next;
+}N;
+void add(N *root, int data) {
+	N *node = (N*)malloc(sizeof(N));
+	node->data = data;
+	node->next = NULL;
+
+	N *p = root;
+	while (p->next != NULL) {
+		p = p->next;
+	}
+	p->next = node;
+}
+void ADD(N *root, int data, int c) {
+	N *node = (N*)malloc(sizeof(N));
+	node->data = data;
+	node->next = NULL;
+
+	N *p = root;
+	while (p->next != NULL) {
+		c--;
+		if (c == 0) {
+			node->next = p->next;
+		}
+		p = p->next;
+	}
+	p->next = node;
+}
+void show(N *root) {
+	printf("show(): ");
+	N *p = root->next;
+	while (1) {
+		printf("%d -> ", p->data);
+		p = p->next; 
+	}
+}
+int main() {
+
+	N* head = (N*)malloc(sizeof(N));
+	head->next = NULL;
+
+	printf("노드개수, 사이클 입력: ");
+	int n, c;
+	scanf("%d%d", &n, &c);
+	int data;
+	for (int i = 0;i < n-1;i++) {
+		scanf("%d", &data);
+		add(head, data);
+	}
+	scanf("%d", &data);
+	ADD(head, data, c);
+	show(head);
+
+
+
+
+	return 0;
+}
+
+
++++++
+
+
+스택 vs 큐
+스택: FILO (first in last out)선입후출
+예) 최근방문한 웹페이지, 실행취소, ...
+1 2 3 입력
+3 2 1 로 출력
+->push()입력, pop()삭제, peek()출력, isEmpty(), isFull(), size()몇개있는지
+
+큐: FIFO 선입선출
+예) 예약, 대기열, ...
+->Enqueue(),Dequeue(), size(), isEmpty(), isFull()
+->front(), back()==rear()
+
+[배열]
+[리스트]
+
+[트리]
+: 노드 이용하여 구현(주소부가 2개인 노드->이진트리)
+
+
+=====
+
+
+알고리즘
+[탐색(검색)]
+: [정렬] -> [버블], [삽입, 선택], 합병, [퀵], 도수정렬, 셀, ...
+
+
++++++
+
+스택
+
+#include <stdio.h>
+#define MAX 5
+int stack[MAX];
+int index = -1;	//아직 데이터 넣지 않았다는 의미
+int isFull() {
+	if (index == MAX - 1) {	//스택이 가득차있을때 1을 리턴
+		return 1;
+	}
+	return 0;
+}
+void push(int data) {
+	if (isFull()) {
+		printf("가득 차서 입력불가!\n");
+		return;
+	}
+	index++;
+	stack[index] = data;	//stack[++index] = data;
+
+}
+int main() {
+
+	int act;
+	while (1) {
+		printf("1.push() 2.pop() 3.peek() 4.size() 5.종료\n");
+		printf("번호입력: ");
+		scanf("%d", &act);
+		if (act == 1) {
+			//데이터를 스택에 입력하는 액션
+			printf("데이터입력: ");
+			int data;
+			scanf("%d", &data);
+			push(data);
+		}
+		else if (act == 2) {
+
+		}
+		else if (act == 3) {
+
+		}
+		else if (act == 4) {
+
+		}
+		else {
+			printf("프로그램 종료\n");
+			break;
+		}
+	}
+
+
+
+
+	return 0;
+}
+
+
+-----
+
+꽉찼으면 데이터입력불가하게 + size
+
+
+#include <stdio.h>
+#define MAX 5
+int stack[MAX];
+int index = -1;	//아직 데이터 넣지 않았다는 의미
+int isFull() {
+	if (index == MAX - 1) {	//스택이 가득차있을때 1을 리턴
+		return 1;
+	}
+	return 0;
+}
+void push(int data) {
+
+	index++;
+	stack[index] = data;	//stack[++index] = data;
+
+}
+int size() {
+	return index + 1;
+}
+int main() {
+
+	int act;
+	while (1) {
+		printf("1.push() 2.pop() 3.peek() 4.size() 5.종료\n");
+		printf("번호입력: ");
+		scanf("%d", &act);
+		if (act == 1) {
+			if (isFull()) {
+				printf("가득 차서 입력불가!\n");
+				continue;
+			}
+			//데이터를 스택에 입력하는 액션
+			printf("데이터입력: ");
+			int data;
+			scanf("%d", &data);
+			push(data);
+		}
+		else if (act == 2) {
+
+		}
+		else if (act == 3) {
+
+		}
+		else if (act == 4) {
+			//스택에 들어있는 데이터의 개수출력
+			//수위, LEVEL, 높이 ...
+			printf("데이터의 개수는 %d개입니다.\n", size());
+		}
+		else {
+			printf("프로그램 종료\n");
+			break;
+		}
+	}
+
+
+
+
+	return 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+

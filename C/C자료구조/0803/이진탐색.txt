@@ -1,0 +1,82 @@
+/*
+[ 1 2 2 3 4 ]
+2 -> [1],[2] / [1]
+*/
+// 10개의 정수를 입력 -> rand()
+// 오름차순정렬
+// 1~100 입력, [?] 출력
+// [-1] 출력
+#include<stdio.h>
+#include<stdlib.h>
+#include<time.h>
+void selection_sort(int *arr, int n) {
+	for (int i = 0; i < n; i++) {
+		int min = arr[i];
+		int min_index = i;
+		for (int j = i; j < n; j++) {
+			if (min > arr[j]) {
+				min = arr[j];
+				min_index = j;
+			}
+		}
+		int tmp = arr[i];
+		arr[i] = arr[min_index];
+		arr[min_index] = tmp;
+	}
+}
+int binarySearch(int *arr, int data, int start, int end) {
+	int m = (start + end) / 2;
+	while (start <= end) {
+		if (arr[m] == data) {
+			return m;
+		}
+		else if (arr[m] < data) {
+			start = m + 1;
+		}
+		else {
+			end = m - 1;
+		}
+		m = (start + end) / 2;
+	}
+	return -1;
+}
+int main() {
+	srand(time(NULL));
+	int arr[10];
+	for (int i = 0; i < 10; i++) {
+		arr[i] = rand() % 100 + 1;
+	}
+	for (int i = 0; i < 10; i++) {
+		printf("%d ", arr[i]);
+	}
+	printf("\n");
+	selection_sort(arr, 10);
+	for (int i = 0; i < 10; i++) {
+		printf("%d ", arr[i]);
+	}
+	printf("\n");
+	printf("찾을 정수 입력: ");
+	int f;
+	scanf("%d", &f);
+	/*
+	int sw = 0; // 스위치OFF
+	int i;
+	for (i = 0; i < 10; i++) {
+		if (arr[i] == f) {
+			printf("[%d] ", i);
+			sw = 1;
+			break;
+		}
+	}
+	if (i == 10) { // break사용시 구현가능
+		printf("[-1]");
+	}
+	if (sw == 0) {
+		printf("[-1]");
+	}
+	*/
+	// 이진탐색==이분탐색
+	printf("[%d]\n", binarySearch(arr, f, 0, 9));
+
+	return 0;
+}

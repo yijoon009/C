@@ -1,0 +1,430 @@
+if (str[index] == ')') {
+			sum++;
+		}
+
+		----
+
+else if (strcmp(act, "size") == 0) {
+			printf("level: %d\n", size());
+		}
+
+어떨때는 "" size\0 널까지 포함해거 5개. == 표기못해
+어떨때는 '' ) 단일문자 char자료형 == 표기가능
+
+
++++++
+
+
+큐
+[ a b c d e ]
+start=0
+end=0
+[ 5 b c d e ]
+s=0
+  e=1
+
+[ 0 7 8 0 0 ]
+s=1
+e=3
+
+e는 현재 인덱스와 같은취급
+s는 0으로 고정되었다가 Dequeue(출력) 할때 하나씩 ++돼.
+
+pop 하면 앞에것 빠져서 s=1
+
+s==e 인덱스가 동일하면 가득참 isFull() / 텅 빔 isEmpty()
+인덱스가 동일하면 가득찬건지, 텅빈건지 모름.
+
+
+[ 0 0 0 0 0 ]
+
+초기값으로 해놓을때
+Q[s]==0 ->isEmpty()
+Q[s]!=0 ->isFull()
+
+[절대 이용하지 않는 데이터 0]
+
+
+*출력할때*
+
+size 구하기
+s부터 출력
+MAX 도달시 [0]으로 이동시키기!
+
+
++++++
+
+
+배열 이용해서 queue 사용
+
+#include <stdio.h>
+#include <stdlib.h>
+#define MAX 5
+int queue[MAX];
+int s = 0;
+int e = 0;
+
+int isFull() {
+	if (s == e && queue[s] != 0) {
+		return 1;
+	}
+	return 0;
+}
+
+int isEmpty() {
+	if (s == e && queue[s] == 0) {
+		return 1;
+	}
+	return 0;
+}
+
+void Enqueue(int data) {
+	queue[e] = data;	//queue[e++]=data;
+	e++;
+	if (e == MAX) {
+		e = 0;	//회전큐
+	}
+}
+void Dequeue() {
+	printf("Dequeue(): %d\n", queue[s]);
+	queue[s] = 0;	//isFull() vs isEmpty() 때문에
+	s++;
+	if (s == MAX) {
+		s = 0;
+	}
+}
+int size() {
+	if (isEmpty()) {
+		return 0;
+	}
+	else if (isFull()) {
+		return MAX;
+	}
+	else {
+		//[ 1 a b 2 3 ]
+		//s=3, e=1 e-s=-2 -2+5=3, 3개
+		if (e - s < 0) {
+			return e - s + MAX;
+		}
+		//[ 1 2 3 a b ]
+		else {
+			return e - s;
+		}
+	}
+}
+
+void show() {
+	int index = s;
+	for (int i = 0;i < size();i++) {
+		printf("%d ", queue[index++]);
+		if (index == MAX) {
+			index = 0;
+		}
+	}
+}
+
+int main() {
+
+	for (int i = 0;i < MAX;i++) {
+		queue[i] = 0;
+	}	//isFull과 isEmpty 구별하기위해 초기화
+
+	int act;
+	while (1) {
+		printf("1.Enqueue() 2.Dequeue() 3.show() 4.종료\n");
+		scanf("%d", &act);
+		if (act == 1) {
+			if (isFull()) {
+				printf("가득참\n");
+				continue;
+			}
+			printf("정수입력: ");
+			int data;
+			scanf("%d", &data);
+			Enqueue(data);
+		}
+		else if (act == 2) {
+			if (isEmpty()) {
+				printf("텅 빔\n");
+				continue;
+			}
+			Dequeue();
+		}
+		else if (act == 3) {
+			printf("show() 호출: ");
+			show();
+			printf("\n");
+		}
+		else {
+			printf("종료\n");
+			break;
+		}
+	}
+	return 0;
+}
+
+
++++++
+
+
+cmd창에 따로 뜨는것 없이
+내가 Enqueue입력하면 입력되고
+Dequeue 입력하면 저절로 빠지게
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#define MAX 5
+int queue[MAX];
+int s = 0;
+int e = 0;
+
+int isFull() {
+	if (s == e && queue[s] != 0) {
+		return 1;
+	}
+	return 0;
+}
+
+int isEmpty() {
+	if (s == e && queue[s] == 0) {
+		return 1;
+	}
+	return 0;
+}
+
+void Enqueue(int data) {
+	queue[e] = data;	
+	e++;
+	if (e == MAX) {
+		e = 0;	
+	}
+}
+void Dequeue() {
+	printf("Dequeue(): %d\n", queue[s]);
+	queue[s] = 0;	
+	s++;
+	if (s == MAX) {
+		s = 0;
+	}
+}
+int size() {
+	if (isEmpty()) {
+		return 0;
+	}
+	else if (isFull()) {
+		return MAX;
+	}
+	else {
+		
+		if (e - s < 0) {
+			return e - s + MAX;
+		}
+		else {
+			return e - s;
+		}
+	}
+}
+
+void show() {
+	int index = s;
+	for (int i = 0;i < size();i++) {
+		printf("%d ", queue[index++]);
+		if (index == MAX) {
+			index = 0;
+		}
+	}
+}
+
+int main() {
+
+	for (int i = 0;i < MAX;i++) {
+		queue[i] = 0;
+	}	
+
+	char act[10];
+	while (1) {
+		scanf("%s", act);
+		if (strcmp(act,"Enqueue")==0) {
+			if (isFull()) {
+				printf("가득참\n");
+				continue;
+			}
+			
+			int data;
+			scanf("%d", &data);
+			Enqueue(data);
+		}
+		else if (strcmp(act,"Dequeue")==0) {
+			if (isEmpty()) {
+				printf("텅 빔\n");
+				continue;
+			}
+			Dequeue();
+		}
+		else if (strcmp(act,"show")==0) {
+			printf("show() 호출: ");
+			show();
+			printf("\n");
+		}
+		else {
+			printf("종료\n");
+			break;
+		}
+	}
+
+
+
+
+
+
+	return 0;
+}
+
+
+-----강사님
+
+
++++++
+
+
+큐(리스트)
+
+#include <stdio.h>
+#include <stdlib.h>
+typedef struct NODE {
+	int data;
+	struct NODE* next;
+}N;
+typedef struct Queue {
+	N* front;
+	N* rear;
+	int size;	//사이즈를 인덱싱 방법을 사용하지 않고있기 때문에 관리용
+}Q;
+void Enqueue(Q *q, int data) {
+	N *n = (N*)malloc(sizeof(N));
+	n->data = data;
+	n->next = NULL;
+
+	if (q->size == 0) {	//큐가 비어있다면,
+		//맨 앞을 현재만든 노드로 설정!
+		q->front = n;
+	}
+	else {
+		q->rear->next = n;	//일반 연결리스트
+	}
+	q->rear = n;
+	q->size++;
+}
+int Dequeue(Q *q) {
+	int data = q->front->data;	//return q->front->data; 리턴 만나면 바로 끝나서 front 위치 못바꿔
+	q->front = q->front->next;
+	q->size--;
+
+	return data;
+}
+/*void show(Q q,int size) {
+	for (int i = 0;i < size;i++) {
+		printf("%d ", q.front->data);
+		q.front = q.front->next;
+	}
+	printf("\n");
+
+}*/
+
+int main() {
+
+	Q q;
+	q.size = 0;
+	q.front = NULL;
+	q.rear = NULL;
+
+	int act;
+	while (1) {
+		printf("1.삽입 2.삭제 3.출력 4.종료\n");
+		scanf("%d", &act);
+		if (act == 1) {
+			int data;
+			scanf("%d", &data);
+			Enqueue(&q, data);
+		}
+		else if (act == 2) {
+			if (q.size == 0) {
+				printf("텅 빔!\n");
+				continue;
+			}
+			printf("Dequeue(): %d\n",Dequeue(&q));
+
+		}
+		else if (act == 3) {
+			if (q.size != 0) {
+				N *p = q.front;
+				while (p != NULL) {
+					printf("%d ", p->data);
+					p = p->next;
+				}
+				printf("\n");
+			}
+			else {
+				printf("출력할 데이터가 없습니다.\n");
+				continue;
+			}
+		}
+		else {
+			printf("종료\n");
+			break;
+		}
+	}
+
+	return 0;
+}
+
+
++++++
+
+
+추가문제 
+1.삽입 2.삭제 3.출력 4.회전 5.종료
+
+회전
+
+void roll(Q *q) {
+	//10 20 30 => 20 30 10
+
+	//일단 30이 10을 가리키게 해야해(리스트)
+	q->rear->next = q->front;
+
+	//start, rear 위치 재지정(큐)
+	q->rear = q->rear->next;
+	q->front = q->front->next;
+
+	//10 20 30 10 20 30 10 20 30 ...
+	//그리고 10 20 사이 링크를 끊어야해
+	//현재 20 front 10 rear
+	q->rear->next = NULL;
+	//20 30 10
+
+}
+
+
+else if (act == 4) {
+		//포인터를 오른쪽으로 옮겨서 데이터들이 왼쪽으로 이동하는 것처럼 보임
+		//10 20 30 을
+		//20 30 10 으로 변경
+		roll(&q);
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
